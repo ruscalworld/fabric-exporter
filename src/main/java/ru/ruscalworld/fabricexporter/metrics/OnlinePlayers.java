@@ -10,7 +10,6 @@ public class OnlinePlayers extends Metric {
 
     @Override
     public double getCurrentValue(FabricExporter exporter) {
-        System.out.println(exporter.getServer().getCurrentPlayerCount());
         return exporter.getServer().getCurrentPlayerCount();
     }
 }
