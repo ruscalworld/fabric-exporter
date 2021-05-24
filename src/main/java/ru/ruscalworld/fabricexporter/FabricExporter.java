@@ -8,6 +8,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.ruscalworld.fabricexporter.config.MainConfig;
 import ru.ruscalworld.fabricexporter.metrics.OnlinePlayers;
+import ru.ruscalworld.fabricexporter.metrics.TicksPerSecond;
+import ru.ruscalworld.fabricexporter.metrics.MillisPerTick;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -29,6 +31,8 @@ public class FabricExporter implements ModInitializer {
 
         MetricUpdater metricUpdater = new MetricUpdater(this);
         metricUpdater.registerMetric(new OnlinePlayers());
+        metricUpdater.registerMetric(new TicksPerSecond());
+        metricUpdater.registerMetric(new MillisPerTick());
 
         ServerLifecycleEvents.SERVER_STARTING.register(this::setServer);
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {

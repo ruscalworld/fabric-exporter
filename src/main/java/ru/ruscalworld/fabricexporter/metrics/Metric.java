@@ -1,6 +1,7 @@
-package ru.ruscalworld.fabricexporter;
+package ru.ruscalworld.fabricexporter.metrics;
 
 import io.prometheus.client.Gauge;
+import ru.ruscalworld.fabricexporter.FabricExporter;
 
 public abstract class Metric {
     private final Gauge gauge;

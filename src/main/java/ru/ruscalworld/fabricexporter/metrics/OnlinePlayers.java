@@ -1,7 +1,6 @@
 package ru.ruscalworld.fabricexporter.metrics;
 
 import ru.ruscalworld.fabricexporter.FabricExporter;
-import ru.ruscalworld.fabricexporter.Metric;
 
 public class OnlinePlayers extends Metric {
     public OnlinePlayers() {

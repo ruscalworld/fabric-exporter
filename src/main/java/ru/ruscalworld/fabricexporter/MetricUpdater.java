@@ -1,5 +1,7 @@
 package ru.ruscalworld.fabricexporter;
 
+import ru.ruscalworld.fabricexporter.metrics.Metric;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
