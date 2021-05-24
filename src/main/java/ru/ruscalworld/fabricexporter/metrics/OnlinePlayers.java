@@ -8,7 +8,7 @@ public class OnlinePlayers extends Metric {
     }
 
     @Override
-    public double getCurrentValue(FabricExporter exporter) {
-        return exporter.getServer().getCurrentPlayerCount();
+    public void update(FabricExporter exporter) {
+        this.getGauge().set(exporter.getServer().getCurrentPlayerCount());
     }
 }

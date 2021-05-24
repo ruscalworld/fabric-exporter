@@ -10,9 +10,9 @@ public class TicksPerSecond extends SparkMetric {
     }
 
     @Override
-    public double getCurrentValue(FabricExporter exporter) {
+    public void update(FabricExporter exporter) {
         DoubleStatistic<StatisticWindow.TicksPerSecond> tps = this.getSpark().tps();
-        if (tps == null) return 20;
-        return tps.poll(StatisticWindow.TicksPerSecond.MINUTES_1);
+        if (tps == null) this.getGauge().set(20);
+        else this.getGauge().set(tps.poll(StatisticWindow.TicksPerSecond.MINUTES_1));
     }
 }

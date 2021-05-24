@@ -7,6 +7,7 @@ import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.ruscalworld.fabricexporter.config.MainConfig;
+import ru.ruscalworld.fabricexporter.metrics.Entities;
 import ru.ruscalworld.fabricexporter.metrics.OnlinePlayers;
 import ru.ruscalworld.fabricexporter.metrics.TicksPerSecond;
 import ru.ruscalworld.fabricexporter.metrics.MillisPerTick;
@@ -33,6 +34,7 @@ public class FabricExporter implements ModInitializer {
         metricUpdater.registerMetric(new OnlinePlayers());
         metricUpdater.registerMetric(new TicksPerSecond());
         metricUpdater.registerMetric(new MillisPerTick());
+        metricUpdater.registerMetric(new Entities());
 
         ServerLifecycleEvents.SERVER_STARTING.register(this::setServer);
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
