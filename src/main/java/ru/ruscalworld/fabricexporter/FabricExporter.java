@@ -27,27 +27,26 @@ public class FabricExporter implements ModInitializer {
             e.printStackTrace();
         }
 
-        ServerLifecycleEvents.SERVER_STARTED.register(this::setServer);
-
-        try {
-            new HTTPServer(this.getConfig().getPort());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         MetricUpdater metricUpdater = new MetricUpdater(this);
         metricUpdater.registerMetric(new OnlinePlayers());
 
-        Timer timer = new Timer();
-        timer.schedule(metricUpdater, 1000, this.getConfig().getUpdateInterval());
+        ServerLifecycleEvents.SERVER_STARTING.register(this::setServer);
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            try {
+                int port = this.getConfig().getPort();
+                new HTTPServer(port);
+                FabricExporter.getLogger().info("Prometheus exporter server is now listening on port " + port);
+
+                Timer timer = new Timer();
+                timer.schedule(metricUpdater, 1000, this.getConfig().getUpdateInterval());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public static Logger getLogger() {
         return LogManager.getLogger();
-    }
-
-    public static String getMetricName(String name) {
-        return "mc_" + name;
     }
 
     public MinecraftServer getServer() {
