@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "fabricexporter",
+  "version": "${version}",
+  "name": "FabricExporter",
+  "description": "Mod that adds a Prometheus exporter with general metrics of your server",
+  "authors": [
+    "RuscalWorld"
+  ],
+  "contact": {
+    "repo": "https://github.com/ruscalworld/fabricexporter"
+  },
+  "license": "MIT",
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "ru.ruscalworld.fabricexporter.FabricExporter"
+    ]
+  },
+  "mixins": [
+    "fabricexporter.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.16.5"
+  }
+}
