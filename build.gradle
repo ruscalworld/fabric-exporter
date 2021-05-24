@@ -13,27 +13,6 @@ plugins {
 }
 
 repositories {
-    mavenCentral()
-    maven {
-        name = 'Bortexel'
-        url = 'https://maven.pkg.github.com/bortexel/bortexel4j'
-        credentials {
-            username = BortexelUsername
-            password = BortexelPassword
-        }
-    }
-    maven {
-        name = 'RuscalWorld'
-        url = 'https://maven.pkg.github.com/ruscalworld/storagelib'
-        credentials {
-            username = BortexelUsername
-            password = BortexelPassword
-        }
-    }
-    maven {
-        name 'm2-dv8tion'
-        url 'https://m2.dv8tion.net/releases'
-    }
     maven {
         url 'https://oss.sonatype.org/content/repositories/snapshots'
     }
