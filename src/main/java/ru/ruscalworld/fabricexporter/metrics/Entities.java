@@ -6,6 +6,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import ru.ruscalworld.fabricexporter.FabricExporter;
+import ru.ruscalworld.fabricexporter.util.TextUtil;
 
 import java.util.HashMap;
 
@@ -28,7 +29,7 @@ public class Entities extends Metric {
             for (String type : currentWorldEntities.keySet()) {
                 Integer count = currentWorldEntities.get(type);
                 EntityType<?> entityType = Registry.ENTITY_TYPE.get(new Identifier(type));
-                this.getGauge().labels(world.getRegistryKey().getValue().getPath(), entityType.getSpawnGroup().getName(), type).set(count);
+                this.getGauge().labels(TextUtil.getWorldName(world), entityType.getSpawnGroup().getName(), type).set(count);
             }
         }
     }
