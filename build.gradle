@@ -81,6 +81,7 @@ shadowJar {
 
     dependencies {
         include dependency("io.prometheus:simpleclient:${project.prometheus_version}")
+        include dependency("io.prometheus:simpleclient_common:${project.prometheus_version}")
         include dependency("io.prometheus:simpleclient_httpserver:${project.prometheus_version}")
     }
 }
