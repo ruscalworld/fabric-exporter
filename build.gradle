@@ -77,7 +77,7 @@ jar {
 }
 
 shadowJar {
-    archiveClassifier = "all-dev"
+    archiveClassifier = "shaded-dev"
 
     dependencies {
         include dependency("io.prometheus:simpleclient:${project.prometheus_version}")
@@ -87,7 +87,7 @@ shadowJar {
 
 task remapShadowJar(type: RemapJarTask, dependsOn: shadowJar) {
     input = shadowJar.archiveFile
-    archiveFileName = shadowJar.archiveFileName.get().replaceAll("-dev\\.jar\$", ".jar")
+    archiveFileName = shadowJar.archiveFileName.get().replaceAll("-shaded-dev\\.jar\$", ".jar")
     addNestedDependencies = true
     remapAccessWidener = true
 }
