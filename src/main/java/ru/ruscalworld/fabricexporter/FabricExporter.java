@@ -7,12 +7,12 @@ import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.ruscalworld.fabricexporter.config.MainConfig;
-import ru.ruscalworld.fabricexporter.metrics.*;
 
 import java.io.IOException;
-import java.util.Timer;
 
 public class FabricExporter implements ModInitializer {
+    private static FabricExporter instance;
+
     private MinecraftServer server;
     private MainConfig config;
     private HTTPServer httpServer;
@@ -50,6 +50,8 @@ public class FabricExporter implements ModInitializer {
             this.getHttpServer().stop();
             this.getMetricRegistry().getTimer().cancel();
         });
+
+        instance = this;
     }
 
     public static Logger getLogger() {
@@ -86,5 +88,9 @@ public class FabricExporter implements ModInitializer {
 
     private void setMetricRegistry(MetricRegistry metricRegistry) {
         this.metricRegistry = metricRegistry;
+    }
+
+    public static FabricExporter getInstance() {
+        return instance;
     }
 }

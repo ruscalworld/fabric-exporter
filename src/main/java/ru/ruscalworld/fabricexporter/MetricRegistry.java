@@ -1,16 +1,20 @@
 package ru.ruscalworld.fabricexporter;
 
 import io.prometheus.client.Collector;
+import io.prometheus.client.Counter;
+import io.prometheus.client.SimpleCollector;
 import ru.ruscalworld.fabricexporter.config.MainConfig;
 import ru.ruscalworld.fabricexporter.metrics.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 
 public class MetricRegistry {
     private final FabricExporter exporter;
     private final List<Metric> metrics = new ArrayList<>();
+    private final HashMap<String, Collector> customMetrics = new HashMap<>();
     private final Timer timer;
 
     public MetricRegistry(FabricExporter exporter) {
@@ -32,25 +36,36 @@ public class MetricRegistry {
         this.registerMetric(new TotalLoadedChunks());
         this.registerMetric(new TicksPerSecond());
         this.registerMetric(new MillisPerTick());
+
+        this.registerCustomMetric("handshakes", new Counter.Builder()
+                .name(getMetricName("handshakes"))
+                .help("Amount of handshake requests")
+                .labelNames("type")
+        );
     }
 
     public void registerMetric(Metric metric) {
         MainConfig config = this.getExporter().getConfig();
         if (metric instanceof SparkMetric && !config.shouldUseSpark()) return;
-        if (!this.isEnabled(metric.getName())) return;
+        if (this.isDisabled(metric.getName())) return;
 
         metric.getGauge().register();
         this.metrics.add(metric);
     }
 
-    public void registerCustomMetric(String name, Collector collector) {
-        if (this.isEnabled(name)) collector.register();
+    public void registerCustomMetric(String name, SimpleCollector.Builder<?, ?> collector) {
+        if (this.isDisabled(name)) return;
+        this.getCustomMetrics().put(name, collector.register());
     }
 
-    public boolean isEnabled(String name) {
+    public boolean isDisabled(String name) {
         MainConfig config = this.getExporter().getConfig();
         String property = "enable-" + name.replace("_", "-");
-        return config.getProperties().getProperty(property, "true").equals("true");
+        return !config.getProperties().getProperty(property, "true").equals("true");
+    }
+
+    public static String getMetricName(String name) {
+        return "minecraft_" + name;
     }
 
     public List<Metric> getMetrics() {
@@ -63,5 +78,9 @@ public class MetricRegistry {
 
     public Timer getTimer() {
         return timer;
+    }
+
+    public HashMap<String, Collector> getCustomMetrics() {
+        return customMetrics;
     }
 }

@@ -2,6 +2,7 @@ package ru.ruscalworld.fabricexporter.metrics;
 
 import io.prometheus.client.Gauge;
 import ru.ruscalworld.fabricexporter.FabricExporter;
+import ru.ruscalworld.fabricexporter.MetricRegistry;
 
 public abstract class Metric {
     private final Gauge gauge;
@@ -10,7 +11,7 @@ public abstract class Metric {
     public Metric(String name, String help, String... labels) {
         this.name = name;
         this.gauge = new Gauge.Builder()
-                .name("minecraft_" + name)
+                .name(MetricRegistry.getMetricName(name))
                 .help(help)
                 .labelNames(labels)
                 .create();
