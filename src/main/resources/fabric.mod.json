@@ -22,7 +22,9 @@
   ],
   "depends": {
     "fabricloader": ">=0.11.3",
-    "fabric": "*",
+    "fabric": "*"
+  },
+  "recommends": {
     "spark": "*"
   }
 }
