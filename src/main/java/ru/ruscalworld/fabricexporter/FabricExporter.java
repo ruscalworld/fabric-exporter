@@ -15,6 +15,7 @@ import java.util.Timer;
 public class FabricExporter implements ModInitializer {
     private MinecraftServer server;
     private MainConfig config;
+    private HTTPServer httpServer;
 
     @Override
     public void onInitialize() {
@@ -35,18 +36,24 @@ public class FabricExporter implements ModInitializer {
         metricUpdater.registerMetric(new LoadedChunks());
         metricUpdater.registerMetric(new TotalLoadedChunks());
 
+        Timer timer = new Timer();
+
         ServerLifecycleEvents.SERVER_STARTING.register(this::setServer);
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             try {
                 int port = this.getConfig().getPort();
-                new HTTPServer(port);
+                this.setHttpServer(new HTTPServer(port));
                 FabricExporter.getLogger().info("Prometheus exporter server is now listening on port " + port);
 
-                Timer timer = new Timer();
                 timer.schedule(metricUpdater, 1000, this.getConfig().getUpdateInterval());
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        });
+
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+            this.getHttpServer().stop();
+            timer.cancel();
         });
     }
 
@@ -68,5 +75,13 @@ public class FabricExporter implements ModInitializer {
 
     public void setConfig(MainConfig config) {
         this.config = config;
+    }
+
+    public HTTPServer getHttpServer() {
+        return httpServer;
+    }
+
+    public void setHttpServer(HTTPServer httpServer) {
+        this.httpServer = httpServer;
     }
 }
