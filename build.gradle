@@ -1,4 +1,5 @@
 import net.fabricmc.loom.task.RemapJarTask
+import com.modrinth.minotaur.TaskModrinthUpload
 
 buildscript {
     dependencies {
@@ -8,6 +9,7 @@ buildscript {
 
 plugins {
     id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id "com.modrinth.minotaur" version "1.1.0"
     id 'fabric-loom' version '0.6-SNAPSHOT'
     id 'maven-publish'
 }
@@ -94,3 +96,14 @@ task remapShadowJar(type: RemapJarTask, dependsOn: shadowJar) {
 }
 
 assemble.dependsOn(remapShadowJar)
+
+task publishModrinth(type: TaskModrinthUpload, dependsOn: remapShadowJar) {
+    onlyIf { System.getenv("MODRINTH_TOKEN") }
+
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = 'dbVXHSlv'
+    versionNumber = project.mod_version
+    uploadFile = remapShadowJar
+    addGameVersion(project.minecraft_version)
+    addLoader('fabric')
+}
