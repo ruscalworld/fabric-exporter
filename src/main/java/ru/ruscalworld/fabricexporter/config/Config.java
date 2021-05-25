@@ -1,14 +1,11 @@
 package ru.ruscalworld.fabricexporter.config;
 
 import net.fabricmc.loader.api.FabricLoader;
-import org.apache.logging.log4j.LogManager;
 import ru.ruscalworld.fabricexporter.FabricExporter;
 import ru.ruscalworld.fabricexporter.util.FileUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -16,6 +13,7 @@ import java.util.Properties;
 
 public abstract class Config {
     private final String fileName;
+    private Properties properties;
 
     public Config(String fileName) {
         this.fileName = fileName;
@@ -36,12 +34,21 @@ public abstract class Config {
 
         Properties properties = new Properties();
         properties.load(Files.newInputStream(path));
-        this.parse(properties);
+        this.setProperties(properties);
+        this.onLoad();
     }
 
-    public abstract void parse(Properties properties);
+    public abstract void onLoad();
 
     public String getFileName() {
         return fileName;
+    }
+
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Properties properties) {
+        this.properties = properties;
     }
 }

@@ -14,7 +14,9 @@ public class MainConfig extends Config {
     }
 
     @Override
-    public void parse(Properties properties) {
+    public void onLoad() {
+        Properties properties = this.getProperties();
+
         String portString = properties.getProperty("server-port", "25585");
         this.setPort(ConvertUtil.intToStringOrDefault(portString, 25585));
 

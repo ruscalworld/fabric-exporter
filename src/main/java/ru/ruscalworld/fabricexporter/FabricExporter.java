@@ -16,6 +16,7 @@ public class FabricExporter implements ModInitializer {
     private MinecraftServer server;
     private MainConfig config;
     private HTTPServer httpServer;
+    private MetricRegistry metricRegistry;
 
     @Override
     public void onInitialize() {
@@ -28,18 +29,9 @@ public class FabricExporter implements ModInitializer {
             e.printStackTrace();
         }
 
-        MetricUpdater metricUpdater = new MetricUpdater(this);
-        metricUpdater.registerMetric(new OnlinePlayers());
-        metricUpdater.registerMetric(new Entities());
-        metricUpdater.registerMetric(new LoadedChunks());
-        metricUpdater.registerMetric(new TotalLoadedChunks());
-
-        if (this.getConfig().shouldUseSpark()) {
-            metricUpdater.registerMetric(new TicksPerSecond());
-            metricUpdater.registerMetric(new MillisPerTick());
-        }
-
-        Timer timer = new Timer();
+        MetricRegistry metricRegistry = new MetricRegistry(this);
+        metricRegistry.registerDefault();
+        this.setMetricRegistry(metricRegistry);
 
         ServerLifecycleEvents.SERVER_STARTING.register(this::setServer);
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
@@ -48,7 +40,7 @@ public class FabricExporter implements ModInitializer {
                 this.setHttpServer(new HTTPServer(port));
                 FabricExporter.getLogger().info("Prometheus exporter server is now listening on port " + port);
 
-                timer.schedule(metricUpdater, 1000, this.getConfig().getUpdateInterval());
+                this.getMetricRegistry().runUpdater();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -56,7 +48,7 @@ public class FabricExporter implements ModInitializer {
 
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
             this.getHttpServer().stop();
-            timer.cancel();
+            this.getMetricRegistry().getTimer().cancel();
         });
     }
 
@@ -86,5 +78,13 @@ public class FabricExporter implements ModInitializer {
 
     public void setHttpServer(HTTPServer httpServer) {
         this.httpServer = httpServer;
+    }
+
+    public MetricRegistry getMetricRegistry() {
+        return metricRegistry;
+    }
+
+    private void setMetricRegistry(MetricRegistry metricRegistry) {
+        this.metricRegistry = metricRegistry;
     }
 }
