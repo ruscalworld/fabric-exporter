@@ -30,11 +30,14 @@ public class FabricExporter implements ModInitializer {
 
         MetricUpdater metricUpdater = new MetricUpdater(this);
         metricUpdater.registerMetric(new OnlinePlayers());
-        metricUpdater.registerMetric(new TicksPerSecond());
-        metricUpdater.registerMetric(new MillisPerTick());
         metricUpdater.registerMetric(new Entities());
         metricUpdater.registerMetric(new LoadedChunks());
         metricUpdater.registerMetric(new TotalLoadedChunks());
+
+        if (this.getConfig().shouldUseSpark()) {
+            metricUpdater.registerMetric(new TicksPerSecond());
+            metricUpdater.registerMetric(new MillisPerTick());
+        }
 
         Timer timer = new Timer();
 

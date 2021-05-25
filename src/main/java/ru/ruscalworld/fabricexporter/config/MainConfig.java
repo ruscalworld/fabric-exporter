@@ -7,6 +7,7 @@ import java.util.Properties;
 public class MainConfig extends Config {
     private int port;
     private int updateInterval;
+    private boolean useSpark;
 
     public MainConfig(String name) {
         super(name);
@@ -19,6 +20,8 @@ public class MainConfig extends Config {
 
         String updateIntervalString = properties.getProperty("update-interval", "1000");
         this.setUpdateInterval(ConvertUtil.intToStringOrDefault(updateIntervalString, 1000));
+
+        this.setShouldUseSpark(properties.getProperty("use-spark", "true").equalsIgnoreCase("true"));
     }
 
     public int getPort() {
@@ -35,5 +38,13 @@ public class MainConfig extends Config {
 
     public void setUpdateInterval(int updateInterval) {
         this.updateInterval = updateInterval;
+    }
+
+    public boolean shouldUseSpark() {
+        return useSpark;
+    }
+
+    public void setShouldUseSpark(boolean useSpark) {
+        this.useSpark = useSpark;
     }
 }
