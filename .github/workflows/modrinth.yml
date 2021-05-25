@@ -18,3 +18,5 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle and publish on Modrinth
         run: ./gradlew publish
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
