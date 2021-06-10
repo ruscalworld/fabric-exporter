@@ -89,8 +89,8 @@ In this file you can see some general settings and metrics settings.
 
 ### Metrics settings
 
-You can disable any metric that registered via MetricRegistry (all metrics by default) using the settings below.
-Names of properties consist of `enabled` and metric name without prefix and `_` replaced with `-`.
+You can disable any metric that registered via MetricRegistry (all metrics by default) using `exporter.properties` file.
+Names of properties consist of `enable` and metric name without prefix and `_` replaced with `-`.
 For example, if you want to disable `minecraft_players_online`, you should set `enable-players-online` to `false`.
 You can also see list of available properties in "Exposed metrics" section.
 If you can't find property for some metrics, you can manually add it.
