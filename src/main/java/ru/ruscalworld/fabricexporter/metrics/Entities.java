@@ -20,11 +20,11 @@ public class Entities extends Metric {
         for (ServerWorld world : exporter.getServer().getWorlds()) {
             HashMap<String, Integer> currentWorldEntities = new HashMap<>();
 
-            for (Entity entity : world.getEntitiesByType(null, entity -> true)) {
+            world.iterateEntities().forEach(entity -> {
                 String name = Registry.ENTITY_TYPE.getId(entity.getType()).getPath();
                 Integer typeCount = currentWorldEntities.getOrDefault(name, 0);
                 currentWorldEntities.put(name, typeCount + 1);
-            }
+            });
 
             for (String type : currentWorldEntities.keySet()) {
                 Integer count = currentWorldEntities.get(type);
