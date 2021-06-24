@@ -1,6 +1,5 @@
 package ru.ruscalworld.fabricexporter.metrics;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
