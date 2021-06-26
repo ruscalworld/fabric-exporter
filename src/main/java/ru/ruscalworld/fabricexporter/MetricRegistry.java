@@ -34,8 +34,11 @@ public class MetricRegistry {
         this.registerMetric(new Entities());
         this.registerMetric(new LoadedChunks());
         this.registerMetric(new TotalLoadedChunks());
-        this.registerMetric(new TicksPerSecond());
-        this.registerMetric(new MillisPerTick());
+
+        if (this.getExporter().getConfig().shouldUseSpark()) {
+            this.registerMetric(new TicksPerSecond());
+            this.registerMetric(new MillisPerTick());
+        }
 
         this.registerCustomMetric("handshakes", new Counter.Builder()
                 .name(getMetricName("handshakes"))
