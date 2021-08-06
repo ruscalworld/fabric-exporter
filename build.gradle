@@ -105,6 +105,7 @@ task publishModrinth(type: TaskModrinthUpload, dependsOn: remapShadowJar) {
     projectId = 'dbVXHSlv'
     versionNumber = project.mod_version
     uploadFile = remapShadowJar
-    addGameVersion(project.minecraft_version)
+    addGameVersion("1.16.5")
+    addGameVersion("1.17.1")
     addLoader('fabric')
 }
