@@ -3,14 +3,18 @@ package ru.ruscalworld.fabricexporter;
 import io.prometheus.client.exporter.HTTPServer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.ruscalworld.fabricexporter.config.MainConfig;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class FabricExporter implements ModInitializer {
+    private static final Logger logger = LogManager.getLogger();
     private static FabricExporter instance;
 
     private MinecraftServer server;
@@ -27,6 +31,13 @@ public class FabricExporter implements ModInitializer {
         } catch (IOException e) {
             FabricExporter.getLogger().fatal("Unable to load config");
             e.printStackTrace();
+        }
+
+        Optional<ModContainer> spark = FabricLoader.getInstance().getModContainer("spark");
+        if (!spark.isPresent() && config.shouldUseSpark()) {
+            config.setShouldUseSpark(false);
+            logger.warn("Spark mod is not installed, but \"use-spark\" property is enabled! TPS and MSPT metrics will be disabled.");
+            logger.warn("To fix this, you should either set \"use-spark\" in exporter.properties to false or install Spark mod (https://spark.lucko.me).");
         }
 
         MetricRegistry metricRegistry = new MetricRegistry(this);
