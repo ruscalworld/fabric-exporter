@@ -10,7 +10,7 @@ buildscript {
 plugins {
     id 'com.github.johnrengelman.shadow' version '6.1.0'
     id "com.modrinth.minotaur" version "1.1.0"
-    id 'fabric-loom' version '0.8-SNAPSHOT'
+    id 'fabric-loom' version '0.6-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -22,8 +22,8 @@ repositories {
 
 apply plugin: 'com.github.johnrengelman.shadow'
 
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
