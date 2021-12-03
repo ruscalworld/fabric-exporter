@@ -107,5 +107,6 @@ task publishModrinth(type: TaskModrinthUpload, dependsOn: remapShadowJar) {
     uploadFile = remapShadowJar
     addGameVersion("1.16.5")
     addGameVersion("1.17.1")
+    addGameVersion("1.18")
     addLoader('fabric')
 }
