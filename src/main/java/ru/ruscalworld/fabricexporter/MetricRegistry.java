@@ -71,6 +71,16 @@ public class MetricRegistry {
         return "minecraft_" + name;
     }
 
+    public static String[] getGlobalLabelNames() {
+        return new String[] { "instance" };
+    }
+
+    public String[] getGlobalLabelValues() {
+        return new String[] {
+                this.getExporter().getConfig().getInstanceName(), // server
+        };
+    }
+
     public List<Metric> getMetrics() {
         return metrics;
     }

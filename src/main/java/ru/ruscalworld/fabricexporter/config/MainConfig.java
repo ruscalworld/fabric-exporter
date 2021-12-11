@@ -8,6 +8,7 @@ public class MainConfig extends Config {
     private int port;
     private int updateInterval;
     private boolean useSpark;
+    private String instanceName;
 
     public MainConfig(String name) {
         super(name);
@@ -24,6 +25,7 @@ public class MainConfig extends Config {
         this.setUpdateInterval(ConvertUtil.intToStringOrDefault(updateIntervalString, 1000));
 
         this.setShouldUseSpark(properties.getProperty("use-spark", "true").equalsIgnoreCase("true"));
+        this.setInstanceName(properties.getProperty("instance-name", "default"));
     }
 
     public int getPort() {
@@ -48,5 +50,13 @@ public class MainConfig extends Config {
 
     public void setShouldUseSpark(boolean useSpark) {
         this.useSpark = useSpark;
+    }
+
+    public String getInstanceName() {
+        return instanceName;
+    }
+
+    public void setInstanceName(String instanceName) {
+        this.instanceName = instanceName;
     }
 }

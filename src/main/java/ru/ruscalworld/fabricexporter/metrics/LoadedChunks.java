@@ -10,9 +10,9 @@ public class LoadedChunks extends Metric {
     }
 
     @Override
-    public void update(FabricExporter exporter) {
+    public void onShouldUpdate(FabricExporter exporter) {
         for (ServerWorld world : exporter.getServer().getWorlds()) {
-            this.getGauge().labels(TextUtil.getWorldName(world)).set(world.getChunkManager().getLoadedChunkCount());
+            this.update(TextUtil.getWorldName(world)).set(world.getChunkManager().getLoadedChunkCount());
         }
     }
 }

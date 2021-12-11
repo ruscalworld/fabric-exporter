@@ -11,7 +11,7 @@ public class MillisPerTick extends SparkMetric {
     }
 
     @Override
-    public void update(FabricExporter exporter) {
+    public void onShouldUpdate(FabricExporter exporter) {
         GenericStatistic<DoubleAverageInfo, StatisticWindow.MillisPerTick> mspt = this.getSpark().mspt();
         if (mspt == null) this.setValue(0, 0, 0);
         else this.setValue(
@@ -22,8 +22,8 @@ public class MillisPerTick extends SparkMetric {
     }
 
     private void setValue(double min, double mean, double max) {
-        this.getGauge().labels("min").set(min);
-        this.getGauge().labels("mean").set(mean);
-        this.getGauge().labels("max").set(max);
+        this.update("min").set(min);
+        this.update("mean").set(mean);
+        this.update("max").set(max);
     }
 }

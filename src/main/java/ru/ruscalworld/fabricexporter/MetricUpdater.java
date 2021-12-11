@@ -18,7 +18,7 @@ public class MetricUpdater extends TimerTask {
     public void run() {
         for (Metric metric : this.getMetrics()) {
             try {
-                metric.update(this.getExporter());
+                metric.onShouldUpdate(this.getExporter());
             } catch (Exception exception) {
                 exception.printStackTrace();
             }

@@ -15,7 +15,7 @@ public class Entities extends Metric {
     }
 
     @Override
-    public void update(FabricExporter exporter) {
+    public void onShouldUpdate(FabricExporter exporter) {
         for (ServerWorld world : exporter.getServer().getWorlds()) {
             HashMap<String, Integer> currentWorldEntities = new HashMap<>();
 
@@ -28,7 +28,7 @@ public class Entities extends Metric {
             for (String type : currentWorldEntities.keySet()) {
                 Integer count = currentWorldEntities.get(type);
                 EntityType<?> entityType = Registry.ENTITY_TYPE.get(new Identifier(type));
-                this.getGauge().labels(TextUtil.getWorldName(world), entityType.getSpawnGroup().getName(), type).set(count);
+                this.update(TextUtil.getWorldName(world), entityType.getSpawnGroup().getName(), type).set(count);
             }
         }
     }
