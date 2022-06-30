@@ -34,7 +34,7 @@ public class FabricExporter implements ModInitializer {
         }
 
         Optional<ModContainer> spark = FabricLoader.getInstance().getModContainer("spark");
-        if (!spark.isPresent() && config.shouldUseSpark()) {
+        if (spark.isEmpty() && config.shouldUseSpark()) {
             config.setShouldUseSpark(false);
             logger.warn("Spark mod is not installed, but \"use-spark\" property is enabled! TPS and MSPT metrics will be disabled.");
             logger.warn("To fix this, you should either set \"use-spark\" in exporter.properties to false or install Spark mod (https://spark.lucko.me).");

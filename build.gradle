@@ -1,16 +1,10 @@
 import net.fabricmc.loom.task.RemapJarTask
 import com.modrinth.minotaur.TaskModrinthUpload
 
-buildscript {
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
-    }
-}
-
 plugins {
-    id 'com.github.johnrengelman.shadow' version '6.1.0'
-    id "com.modrinth.minotaur" version "1.1.0"
-    id 'fabric-loom' version '0.6-SNAPSHOT'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'com.modrinth.minotaur' version '1.1.0'
+    id 'fabric-loom' version '0.12-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -22,8 +16,8 @@ repositories {
 
 apply plugin: 'com.github.johnrengelman.shadow'
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -93,7 +87,6 @@ task remapShadowJar(type: RemapJarTask, dependsOn: shadowJar) {
     input = shadowJar.archiveFile
     archiveFileName = shadowJar.archiveFileName.get().replaceAll("-shaded-dev\\.jar\$", ".jar")
     addNestedDependencies = true
-    remapAccessWidener = true
 }
 
 assemble.dependsOn(remapShadowJar)
@@ -105,8 +98,6 @@ task publishModrinth(type: TaskModrinthUpload, dependsOn: remapShadowJar) {
     projectId = 'dbVXHSlv'
     versionNumber = project.mod_version
     uploadFile = remapShadowJar
-    addGameVersion("1.16.5")
-    addGameVersion("1.17.1")
-    addGameVersion("1.18")
+    addGameVersion("1.19")
     addLoader('fabric')
 }
