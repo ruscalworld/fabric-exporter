@@ -59,7 +59,7 @@ public class FabricExporter implements ModInitializer {
 
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
             this.getHttpServer().close();
-            this.getMetricRegistry().getTimer().cancel();
+            this.getMetricRegistry().getMetricUpdaterTimer().cancel();
         });
 
         instance = this;

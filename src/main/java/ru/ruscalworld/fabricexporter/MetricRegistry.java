@@ -15,18 +15,18 @@ public class MetricRegistry {
     private final FabricExporter exporter;
     private final List<Metric> metrics = new ArrayList<>();
     private final HashMap<String, Collector> customMetrics = new HashMap<>();
-    private final Timer timer;
+    private final Timer metricUpdaterTimer;
 
     public MetricRegistry(FabricExporter exporter) {
         this.exporter = exporter;
-        timer = new Timer();
+        metricUpdaterTimer = new Timer("Metric Updater Timer");
     }
 
     public void runUpdater() {
         MainConfig config = this.getExporter().getConfig();
         MetricUpdater metricUpdater = new MetricUpdater(this.getExporter());
         this.getMetrics().forEach(metricUpdater::registerMetric);
-        this.getTimer().schedule(metricUpdater, 1000, config.getUpdateInterval());
+        this.getMetricUpdaterTimer().schedule(metricUpdater, 1000, config.getUpdateInterval());
     }
 
     public void registerDefault() {
@@ -79,8 +79,8 @@ public class MetricRegistry {
         return exporter;
     }
 
-    public Timer getTimer() {
-        return timer;
+    public Timer getMetricUpdaterTimer() {
+        return metricUpdaterTimer;
     }
 
     public HashMap<String, Collector> getCustomMetrics() {
