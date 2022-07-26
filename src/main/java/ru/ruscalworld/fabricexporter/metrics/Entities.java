@@ -1,8 +1,10 @@
 package ru.ruscalworld.fabricexporter.metrics;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.TypeFilter;
 import net.minecraft.util.registry.Registry;
 import ru.ruscalworld.fabricexporter.FabricExporter;
 import ru.ruscalworld.fabricexporter.util.TextUtil;
@@ -10,6 +12,19 @@ import ru.ruscalworld.fabricexporter.util.TextUtil;
 import java.util.HashMap;
 
 public class Entities extends Metric {
+    private static final TypeFilter<Entity, ?> ENTITY_FILTER = new TypeFilter<>() {
+
+        @Override
+        public Entity downcast(Entity entity) {
+            return entity;
+        }
+
+        @Override
+        public Class<? extends Entity> getBaseClass() {
+            return Entity.class;
+        }
+    };
+
     public Entities() {
         super("entities", "Amount of entities in the world", "world", "group", "type");
     }
@@ -19,7 +34,7 @@ public class Entities extends Metric {
         for (ServerWorld world : exporter.getServer().getWorlds()) {
             HashMap<String, Integer> currentWorldEntities = new HashMap<>();
 
-            world.iterateEntities().forEach(entity -> {
+            world.getEntitiesByType(ENTITY_FILTER, (entity) -> true).forEach(entity -> {
                 String name = Registry.ENTITY_TYPE.getId(entity.getType()).getPath();
                 Integer typeCount = currentWorldEntities.getOrDefault(name, 0);
                 currentWorldEntities.put(name, typeCount + 1);
