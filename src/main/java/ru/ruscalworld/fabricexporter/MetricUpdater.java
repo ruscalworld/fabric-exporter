@@ -1,5 +1,7 @@
 package ru.ruscalworld.fabricexporter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.ruscalworld.fabricexporter.metrics.Metric;
 
 import java.util.ArrayList;
@@ -7,6 +9,7 @@ import java.util.List;
 import java.util.TimerTask;
 
 public class MetricUpdater extends TimerTask {
+    private final static Logger logger = LoggerFactory.getLogger("MetricUpdater");
     private final List<Metric> metrics = new ArrayList<>();
     private final FabricExporter exporter;
 
@@ -20,7 +23,7 @@ public class MetricUpdater extends TimerTask {
             try {
                 metric.update(this.getExporter());
             } catch (Exception exception) {
-                exception.printStackTrace();
+                logger.error("Error updating metric " + metric.getName(), exception);
             }
         }
     }
