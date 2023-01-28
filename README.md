@@ -1,7 +1,7 @@
 # FabricExporter
 
-![](https://img.shields.io/github/license/RuscalWorld/FabricExporter)
-![](https://img.shields.io/github/workflow/status/RuscalWorld/FabricExporter/Build)
+![](https://img.shields.io/github/license/ruscalworld/fabric-exporter)
+![](https://img.shields.io/github/actions/workflow/status/ruscalworld/fabric-exporter/gradle.yml?branch=master)
 
 Fabric mod that adds a Prometheus exporter with general metrics of your server.
 
