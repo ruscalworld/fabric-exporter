@@ -24,15 +24,15 @@ Here is a list of metrics that are collected by FabricExporter.
 
 You can disable any of these metrics in [config](src/main/resources/config/exporter.properties).
 
-| Prometheus name | Description | Config property | Collected by |
-| --------------- | ----------- | --------------- | ------------ |
-| `minecraft_loaded_chunks` | Amount of currently loaded chunks on server | `enable-loaded-chunks` | Minecraft |
-| `minecraft_total_loaded_chunks` | Amount of total loaded chunks on server | `enable-total-loaded-chunks` | Minecraft |
-| `minecraft_mspt` | Count of milliseconds per tick (MSPT) | `enable-mspt` | Spark |
-| `minecraft_tps` | Count of ticks per second (TPS) | `enable-tps` | Spark |
-| `minecraft_players_online` | Amount of currently online players on your server | `enable-players-online` | FabricExporter |
-| `minecraft_entities` | Amount of currently loaded entities on your server | `enable-entities` | FabricExporter |
-| `minecraft_handshakes` | Count of handshake requests | `enable-handshakes` | FabricExporter |
+| Prometheus name                 | Description                                        | Config property              | Collected by   |
+|---------------------------------|----------------------------------------------------|------------------------------|----------------|
+| `minecraft_loaded_chunks`       | Amount of currently loaded chunks on server        | `enable-loaded-chunks`       | Minecraft      |
+| `minecraft_total_loaded_chunks` | Amount of total loaded chunks on server            | `enable-total-loaded-chunks` | Minecraft      |
+| `minecraft_mspt`                | Count of milliseconds per tick (MSPT)              | `enable-mspt`                | Spark          |
+| `minecraft_tps`                 | Count of ticks per second (TPS)                    | `enable-tps`                 | Spark          |
+| `minecraft_players_online`      | Amount of currently online players on your server  | `enable-players-online`      | FabricExporter |
+| `minecraft_entities`            | Amount of currently loaded entities on your server | `enable-entities`            | FabricExporter |
+| `minecraft_handshakes`          | Count of handshake requests                        | `enable-handshakes`          | FabricExporter |
 
 ## Getting started
 
