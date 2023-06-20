@@ -36,6 +36,7 @@ dependencies {
     // You may need to force-disable transitiveness on them.
     implementation "io.prometheus:simpleclient:${project.prometheus_version}"
     implementation "io.prometheus:simpleclient_httpserver:${project.prometheus_version}"
+    implementation "io.prometheus:simpleclient_hotspot:${project.prometheus_version}"
 
     compileOnly "me.lucko:spark-api:0.1-SNAPSHOT"
 }

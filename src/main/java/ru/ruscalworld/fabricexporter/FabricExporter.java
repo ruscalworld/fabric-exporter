@@ -1,6 +1,7 @@
 package ru.ruscalworld.fabricexporter;
 
 import io.prometheus.client.exporter.HTTPServer;
+import io.prometheus.client.hotspot.DefaultExports;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -43,6 +44,10 @@ public class FabricExporter implements ModInitializer {
         MetricRegistry metricRegistry = new MetricRegistry(this);
         metricRegistry.registerDefault();
         this.setMetricRegistry(metricRegistry);
+
+        if (config.shouldExportJvmDefaults()) {
+            DefaultExports.initialize();
+        }
 
         ServerLifecycleEvents.SERVER_STARTING.register(this::setServer);
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {

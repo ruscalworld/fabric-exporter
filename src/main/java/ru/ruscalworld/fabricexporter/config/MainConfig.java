@@ -8,6 +8,7 @@ public class MainConfig extends Config {
     private int port;
     private int updateInterval;
     private boolean useSpark;
+    private boolean exportJvmDefaults;
 
     public MainConfig(String name) {
         super(name);
@@ -24,6 +25,8 @@ public class MainConfig extends Config {
         this.setUpdateInterval(ConvertUtil.intToStringOrDefault(updateIntervalString, 1000));
 
         this.setShouldUseSpark(properties.getProperty("use-spark", "true").equalsIgnoreCase("true"));
+
+        this.setShouldExportJvmDefaults(properties.getProperty("export-default-jvm-metrics", "true").equalsIgnoreCase("true"));
     }
 
     public int getPort() {
@@ -48,5 +51,13 @@ public class MainConfig extends Config {
 
     public void setShouldUseSpark(boolean useSpark) {
         this.useSpark = useSpark;
+    }
+
+    public boolean shouldExportJvmDefaults() {
+        return exportJvmDefaults;
+    }
+
+    public void setShouldExportJvmDefaults(boolean exportJvmDefaults) {
+        this.exportJvmDefaults = exportJvmDefaults;
     }
 }
