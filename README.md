@@ -24,15 +24,16 @@ Here is a list of metrics that are collected by FabricExporter.
 
 You can disable any of these metrics in [config](src/main/resources/config/exporter.properties).
 
-| Prometheus name                 | Description                                        | Config property              | Collected by   |
-|---------------------------------|----------------------------------------------------|------------------------------|----------------|
-| `minecraft_loaded_chunks`       | Amount of currently loaded chunks on server        | `enable-loaded-chunks`       | Minecraft      |
-| `minecraft_total_loaded_chunks` | Amount of total loaded chunks on server            | `enable-total-loaded-chunks` | Minecraft      |
-| `minecraft_mspt`                | Count of milliseconds per tick (MSPT)              | `enable-mspt`                | Spark          |
-| `minecraft_tps`                 | Count of ticks per second (TPS)                    | `enable-tps`                 | Spark          |
-| `minecraft_players_online`      | Amount of currently online players on your server  | `enable-players-online`      | FabricExporter |
-| `minecraft_entities`            | Amount of currently loaded entities on your server | `enable-entities`            | FabricExporter |
-| `minecraft_handshakes`          | Count of handshake requests                        | `enable-handshakes`          | FabricExporter |
+| Prometheus name                 | Description                                                                             | Config property              | Collected by      |
+|---------------------------------|-----------------------------------------------------------------------------------------|------------------------------|-------------------|
+| `minecraft_loaded_chunks`       | Amount of currently loaded chunks on server                                             | `enable-loaded-chunks`       | Minecraft         |
+| `minecraft_total_loaded_chunks` | Amount of total loaded chunks on server                                                 | `enable-total-loaded-chunks` | Minecraft         |
+| `minecraft_mspt`                | Count of milliseconds per tick (MSPT)                                                   | `enable-mspt`                | Spark             |
+| `minecraft_tps`                 | Count of ticks per second (TPS)                                                         | `enable-tps`                 | Spark             |
+| `minecraft_players_online`      | Amount of currently online players on your server                                       | `enable-players-online`      | FabricExporter    |
+| `minecraft_entities`            | Amount of currently loaded entities on your server                                      | `enable-entities`            | FabricExporter    |
+| `minecraft_handshakes`          | Count of handshake requests                                                             | `enable-handshakes`          | FabricExporter    |
+| `jvm_*`                         | JVM metrics collected by [Prometheus client](https://github.com/prometheus/client_java) | `export-jvm-metrics`         | Prometheus client |
 
 ## Getting started
 
@@ -40,7 +41,7 @@ To use this mod you should have at least Fabric server and Prometheus installed.
 
 ### Installing mod
 
-1. Download the mod from [Releases](https://github.com/RuscalWorld/FabricExporter/releases) page.
+1. Download the mod from [Releases](https://github.com/ruscalworld/fabric-exporter/releases) page.
 2. Drop downloaded mod jar to the `mods` folder.
 3. Start your server to generate config file.
 4. Open `config/exporter.properties`, ensure that `server-port` value is an open port that can be accessed by your Prometheus and change it if required.
@@ -81,11 +82,11 @@ In this file you can see some general settings and metrics settings.
 
 ### General settings
 
-| Property | Description | Default value |
-| -------- | ----------- | ------------- |
-| `server-port` | Port on what the web server will listen for requests | `25585` |
-| `update-interval` | Interval between gauge metrics updates in milliseconds | `1000` |
-| `use-spark` | If set to `false`, FabricExporter will be independent from Spark | `true` |
+| Property          | Description                                                      | Default value |
+|-------------------|------------------------------------------------------------------|---------------|
+| `server-port`     | Port on what the web server will listen for requests             | `25585`       |
+| `update-interval` | Interval between gauge metrics updates in milliseconds           | `1000`        |
+| `use-spark`       | If set to `false`, FabricExporter will be independent from Spark | `true`        |
 
 ### Metrics settings
 
