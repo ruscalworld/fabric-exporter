@@ -5,7 +5,7 @@
 
 Fabric mod that adds a Prometheus exporter with general metrics of your server.
 
-![Grafana Dashboard](https://img.share.superhub.xyz/2oiycx.png)
+![Grafana Dashboard](https://grafana.com/api/dashboards/14492/images/10444/image)
 
 ---
 
