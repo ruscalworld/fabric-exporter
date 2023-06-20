@@ -1,4 +1,4 @@
-package ru.ruscalworld.fabricexporter.metrics;
+package ru.ruscalworld.fabricexporter.metrics.spark;
 
 import me.lucko.spark.api.statistic.StatisticWindow;
 import me.lucko.spark.api.statistic.misc.DoubleAverageInfo;

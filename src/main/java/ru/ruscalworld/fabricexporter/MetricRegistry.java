@@ -4,7 +4,14 @@ import io.prometheus.client.Collector;
 import io.prometheus.client.Counter;
 import io.prometheus.client.SimpleCollector;
 import ru.ruscalworld.fabricexporter.config.MainConfig;
-import ru.ruscalworld.fabricexporter.metrics.*;
+import ru.ruscalworld.fabricexporter.metrics.Metric;
+import ru.ruscalworld.fabricexporter.metrics.spark.MillisPerTick;
+import ru.ruscalworld.fabricexporter.metrics.spark.SparkMetric;
+import ru.ruscalworld.fabricexporter.metrics.spark.TicksPerSecond;
+import ru.ruscalworld.fabricexporter.metrics.world.Entities;
+import ru.ruscalworld.fabricexporter.metrics.world.LoadedChunks;
+import ru.ruscalworld.fabricexporter.metrics.world.OnlinePlayers;
+import ru.ruscalworld.fabricexporter.metrics.world.TotalLoadedChunks;
 
 import java.util.ArrayList;
 import java.util.HashMap;

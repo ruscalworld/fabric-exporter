@@ -1,4 +1,4 @@
-package ru.ruscalworld.fabricexporter.metrics;
+package ru.ruscalworld.fabricexporter.metrics.world;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -7,6 +7,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypeFilter;
 import ru.ruscalworld.fabricexporter.FabricExporter;
+import ru.ruscalworld.fabricexporter.metrics.Metric;
 import ru.ruscalworld.fabricexporter.util.TextUtil;
 
 import java.util.HashMap;

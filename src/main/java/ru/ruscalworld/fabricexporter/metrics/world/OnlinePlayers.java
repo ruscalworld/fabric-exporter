@@ -1,7 +1,8 @@
-package ru.ruscalworld.fabricexporter.metrics;
+package ru.ruscalworld.fabricexporter.metrics.world;
 
 import net.minecraft.server.world.ServerWorld;
 import ru.ruscalworld.fabricexporter.FabricExporter;
+import ru.ruscalworld.fabricexporter.metrics.Metric;
 import ru.ruscalworld.fabricexporter.util.TextUtil;
 
 public class OnlinePlayers extends Metric {
