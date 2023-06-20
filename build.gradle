@@ -1,9 +1,8 @@
-import com.modrinth.minotaur.TaskModrinthUpload
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.2'
-    id 'com.modrinth.minotaur' version '1.1.0'
+    id 'com.modrinth.minotaur' version '2.+'
     id 'fabric-loom' version '0.12-SNAPSHOT'
     id 'maven-publish'
 }
@@ -13,8 +12,6 @@ repositories {
         url 'https://oss.sonatype.org/content/repositories/snapshots'
     }
 }
-
-apply plugin: 'com.github.johnrengelman.shadow'
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
@@ -92,17 +89,20 @@ tasks.register('remapShadowJar', RemapJarTask) {
     addNestedDependencies = true
 }
 
-assemble.dependsOn(remapShadowJar)
-
-tasks.register('publishModrinth', TaskModrinthUpload) {
-    dependsOn remapShadowJar
-    onlyIf { System.getenv('MODRINTH_TOKEN') }
-
+modrinth {
     token = System.getenv('MODRINTH_TOKEN')
     projectId = 'dbVXHSlv'
     versionNumber = project.mod_version
+    versionType = 'release'
     uploadFile = remapShadowJar
 
-    addGameVersion((String) project.minecraft_version)
-    addLoader('fabric')
+    gameVersions.add(project.minecraft_version)
+    loaders.add('fabric')
+
+    dependencies {
+        required.project 'fabric-api'
+        optional.project 'spark'
+    }
 }
+
+assemble.dependsOn(remapShadowJar)
