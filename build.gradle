@@ -41,40 +41,40 @@ dependencies {
 }
 
 processResources {
-    inputs.property "version", project.version
+    inputs.property 'version', project.version
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
     from(sourceSets.main.resources.srcDirs) {
-        include "fabric.mod.json"
-        expand "version": project.version
+        include 'fabric.mod.json'
+        expand 'version': project.version
     }
 
     from(sourceSets.main.resources.srcDirs) {
-        exclude "fabric.mod.json"
+        exclude 'fabric.mod.json'
     }
 }
 
 // ensure that the encoding is set to UTF-8, no matter what the system default is
 // this fixes some edge cases with special characters not displaying correctly
 // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
 }
 
 // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
 // if it is present.
 // If you remove this task, sources will not be generated.
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = "sources"
+tasks.register('sourcesJar', Jar) {
+    dependsOn classes
     from sourceSets.main.allSource
 }
 
 jar {
-    from "LICENSE"
+    from 'LICENSE'
 }
 
 shadowJar {
-    archiveClassifier = "shaded-dev"
+    archiveClassifier = 'shaded-dev'
 
     dependencies {
         include dependency("io.prometheus:simpleclient:${project.prometheus_version}")
@@ -83,21 +83,24 @@ shadowJar {
     }
 }
 
-task remapShadowJar(type: RemapJarTask, dependsOn: shadowJar) {
+tasks.register('remapShadowJar', RemapJarTask) {
+    dependsOn shadowJar
     input = shadowJar.archiveFile
-    archiveFileName = shadowJar.archiveFileName.get().replaceAll("-shaded-dev\\.jar\$", ".jar")
+    archiveFileName = shadowJar.archiveFileName.get().replaceAll('-shaded-dev\\.jar\$', '.jar')
     addNestedDependencies = true
 }
 
 assemble.dependsOn(remapShadowJar)
 
-task publishModrinth(type: TaskModrinthUpload, dependsOn: remapShadowJar) {
-    onlyIf { System.getenv("MODRINTH_TOKEN") }
+tasks.register('publishModrinth', TaskModrinthUpload) {
+    dependsOn remapShadowJar
+    onlyIf { System.getenv('MODRINTH_TOKEN') }
 
-    token = System.getenv("MODRINTH_TOKEN")
+    token = System.getenv('MODRINTH_TOKEN')
     projectId = 'dbVXHSlv'
     versionNumber = project.mod_version
     uploadFile = remapShadowJar
-    addGameVersion("1.19.3")
+
+    addGameVersion((String) project.minecraft_version)
     addLoader('fabric')
 }
