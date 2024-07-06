@@ -43,7 +43,7 @@ public class Entities extends Metric {
 
             for (String type : currentWorldEntities.keySet()) {
                 Integer count = currentWorldEntities.get(type);
-                EntityType<?> entityType = Registries.ENTITY_TYPE.get(new Identifier(type));
+                EntityType<?> entityType = Registries.ENTITY_TYPE.get(Identifier.of(type));
                 this.getGauge().labels(TextUtil.getWorldName(world), entityType.getSpawnGroup().getName(), type).set(count);
             }
         }
