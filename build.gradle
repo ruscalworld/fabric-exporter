@@ -3,7 +3,7 @@ import net.fabricmc.loom.task.RemapJarTask
 plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'com.modrinth.minotaur' version '2.+'
-    id 'fabric-loom' version '1.4-SNAPSHOT'
+    id 'fabric-loom' version '1.6+'
     id 'maven-publish'
 }
 
