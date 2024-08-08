@@ -1,6 +1,7 @@
 package ru.ruscalworld.fabricexporter.metrics;
 
 import io.prometheus.client.Gauge;
+import org.jetbrains.annotations.NotNull;
 import ru.ruscalworld.fabricexporter.FabricExporter;
 import ru.ruscalworld.fabricexporter.MetricRegistry;
 
@@ -17,7 +18,7 @@ public abstract class Metric {
                 .create();
     }
 
-    public abstract void update(FabricExporter exporter);
+    public abstract void update(@NotNull FabricExporter exporter);
 
     public Gauge getGauge() {
         return gauge;

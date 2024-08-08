@@ -6,6 +6,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypeFilter;
+import org.jetbrains.annotations.NotNull;
 import ru.ruscalworld.fabricexporter.FabricExporter;
 import ru.ruscalworld.fabricexporter.metrics.Metric;
 import ru.ruscalworld.fabricexporter.util.TextUtil;
@@ -31,7 +32,7 @@ public class Entities extends Metric {
     }
 
     @Override
-    public void update(FabricExporter exporter) {
+    public void update(@NotNull FabricExporter exporter) {
         for (ServerWorld world : exporter.getServer().getWorlds()) {
             HashMap<String, Integer> currentWorldEntities = new HashMap<>();
 
