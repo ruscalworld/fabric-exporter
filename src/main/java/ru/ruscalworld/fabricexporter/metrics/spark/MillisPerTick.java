@@ -3,6 +3,7 @@ package ru.ruscalworld.fabricexporter.metrics.spark;
 import me.lucko.spark.api.statistic.StatisticWindow;
 import me.lucko.spark.api.statistic.misc.DoubleAverageInfo;
 import me.lucko.spark.api.statistic.types.GenericStatistic;
+import org.jetbrains.annotations.NotNull;
 import ru.ruscalworld.fabricexporter.FabricExporter;
 
 public class MillisPerTick extends SparkMetric {
@@ -11,7 +12,7 @@ public class MillisPerTick extends SparkMetric {
     }
 
     @Override
-    public void update(FabricExporter exporter) {
+    public void update(@NotNull FabricExporter exporter) {
         GenericStatistic<DoubleAverageInfo, StatisticWindow.MillisPerTick> mspt = this.getSpark().mspt();
         if (mspt == null) this.setValue(0, 0, 0);
         else this.setValue(

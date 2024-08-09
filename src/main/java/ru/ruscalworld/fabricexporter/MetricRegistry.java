@@ -5,12 +5,12 @@ import io.prometheus.client.Counter;
 import io.prometheus.client.SimpleCollector;
 import ru.ruscalworld.fabricexporter.config.MainConfig;
 import ru.ruscalworld.fabricexporter.metrics.Metric;
+import ru.ruscalworld.fabricexporter.metrics.player.*;
 import ru.ruscalworld.fabricexporter.metrics.spark.MillisPerTick;
 import ru.ruscalworld.fabricexporter.metrics.spark.SparkMetric;
 import ru.ruscalworld.fabricexporter.metrics.spark.TicksPerSecond;
 import ru.ruscalworld.fabricexporter.metrics.world.Entities;
 import ru.ruscalworld.fabricexporter.metrics.world.LoadedChunks;
-import ru.ruscalworld.fabricexporter.metrics.world.OnlinePlayers;
 import ru.ruscalworld.fabricexporter.metrics.world.TotalLoadedChunks;
 
 import java.util.ArrayList;
@@ -37,10 +37,18 @@ public class MetricRegistry {
     }
 
     public void registerDefault() {
-        this.registerMetric(new OnlinePlayers());
         this.registerMetric(new Entities());
         this.registerMetric(new LoadedChunks());
         this.registerMetric(new TotalLoadedChunks());
+
+        this.registerMetric(new OnlinePlayers());
+        this.registerMetric(new PlayerExperienceLevel());
+        this.registerMetric(new PlayerTotalExperience());
+        this.registerMetric(new PlayerHealth());
+        this.registerMetric(new PlayerArmor());
+        this.registerMetric(new PlayerAir());
+        this.registerMetric(new PlayerFoodLevel());
+        this.registerMetric(new PlayerSaturationLevel());
 
         if (this.getExporter().getConfig().shouldUseSpark()) {
             this.registerMetric(new TicksPerSecond());
