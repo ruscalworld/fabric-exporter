@@ -48,7 +48,7 @@ public class MetricRegistry {
         }
 
         this.registerCustomMetric("handshakes", new Counter.Builder()
-                .name(getMetricName("handshakes"))
+                .name(getMetricName("handshakes_total"))
                 .help("Amount of handshake requests")
                 .labelNames("type")
         );
