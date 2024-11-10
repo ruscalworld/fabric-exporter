@@ -14,7 +14,6 @@ import java.util.HashMap;
 
 public class Entities extends Metric {
     private static final TypeFilter<Entity, ?> ENTITY_FILTER = new TypeFilter<>() {
-
         @Override
         public Entity downcast(Entity entity) {
             return entity;
@@ -27,15 +26,16 @@ public class Entities extends Metric {
     };
 
     public Entities() {
-        super("entities", "Amount of entities in the world", "world", "group", "type");
+        super("entities", "Amount of currently loaded entities", "world", "group", "type");
     }
 
     @Override
     public void update(FabricExporter exporter) {
         for (ServerWorld world : exporter.getServer().getWorlds()) {
             HashMap<String, Integer> currentWorldEntities = new HashMap<>();
+            Registries.ENTITY_TYPE.getIds().forEach(id -> currentWorldEntities.put(id.getPath(), 0));
 
-            world.getEntitiesByType(ENTITY_FILTER, (entity) -> true).forEach(entity -> {
+            world.getEntitiesByType(ENTITY_FILTER, entity -> true).forEach(entity -> {
                 String name = Registries.ENTITY_TYPE.getId(entity.getType()).getPath();
                 Integer typeCount = currentWorldEntities.getOrDefault(name, 0);
                 currentWorldEntities.put(name, typeCount + 1);

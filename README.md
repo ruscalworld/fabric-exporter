@@ -32,7 +32,7 @@ You can disable any of these metrics in [config](src/main/resources/config/expor
 | `minecraft_tps`                 | Count of ticks per second (TPS)                                                         | `enable-tps`                 | Spark             |
 | `minecraft_players_online`      | Amount of currently online players on your server                                       | `enable-players-online`      | FabricExporter    |
 | `minecraft_entities`            | Amount of currently loaded entities on your server                                      | `enable-entities`            | FabricExporter    |
-| `minecraft_handshakes`          | Count of handshake requests                                                             | `enable-handshakes`          | FabricExporter    |
+| `minecraft_handshakes_total`    | Count of handshake requests                                                             | `enable-handshakes`          | FabricExporter    |
 | `jvm_*`                         | JVM metrics collected by [Prometheus client](https://github.com/prometheus/client_java) | `export-jvm-metrics`         | Prometheus client |
 
 ## Getting started
