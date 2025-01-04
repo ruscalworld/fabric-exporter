@@ -13,7 +13,8 @@ It's a server-side mod that exposes metrics of your Fabric server in [Prometheus
 So, it requires you to have at least Prometheus installed to collect provided metrics.
 I recommend also using [Grafana](https://grafana.com) to visualize data.
 
-If you want to get TPS and MSPT metrics, you should also install [Spark](https://spark.lucko.me) as mod for your Fabric server.
+If you want to get TPS and MSPT metrics, you should also install [Spark](https://spark.lucko.me) as mod for your Fabric
+server.
 
 ## Exposed metrics
 
@@ -44,30 +45,39 @@ To use this mod you should have at least Fabric server and Prometheus installed.
 1. Download the mod from [Releases](https://github.com/ruscalworld/fabric-exporter/releases) page.
 2. Drop downloaded mod jar to the `mods` folder.
 3. Start your server to generate config file.
-4. Open `config/exporter.properties`, ensure that `server-port` value is an open port that can be accessed by your Prometheus and change it if required.
+4. Open `config/exporter.properties`, ensure that `server-port` value is an open port that can be accessed by your
+   Prometheus and change it if required.
 5. Restart the server if you made changes in config.
 
 ### Configuring Prometheus
 
 1. Open your Prometheus config file (it located at `/etc/prometheus/prometheus.yml` by default).
+
 ```bash
 sudo nano /etc/prometheus/prometheus.yml
 ```
-2. Add FabricExporter endpoint to the `scrape_configs` section. 
-Don't forget to replace `127.0.0.1` with address of your server and `25585` with port specified in `server-port` property in `exporter.properties` file.
+
+2. Add FabricExporter endpoint to the `scrape_configs` section.
+   Don't forget to replace `127.0.0.1` with address of your server and `25585` with port specified in `server-port`
+   property in `exporter.properties` file.
+
 ```YAML
 - job_name: 'fabric'
   static_configs:
-    - targets: ['127.0.0.1:25585']
+    - targets: [ '127.0.0.1:25585' ]
 ```
+
 3. Restart Prometheus service.
+
 ```bash
 sudo service prometheus restart
 ```
 
 ### Importing Grafana dashboard
-If you want to use Grafana, you can use my dashboard as template. 
-I assume that you have already [created a Prometheus data source](https://prometheus.io/docs/visualization/grafana/) in Grafana.
+
+If you want to use Grafana, you can use my dashboard as template.
+I assume that you have already [created a Prometheus data source](https://prometheus.io/docs/visualization/grafana/) in
+Grafana.
 So, let's import [dashboard for FabricExporter](https://grafana.com/grafana/dashboards/14492).
 
 1. Log in to your Grafana and go to `Create -> Import` tab.
@@ -76,17 +86,19 @@ So, let's import [dashboard for FabricExporter](https://grafana.com/grafana/dash
 
 ## Configuring
 
-After your server starts, FabricExporter will create `exporter.properties` file in the `config` folder. 
+After your server starts, FabricExporter will create `exporter.properties` file in the `config` folder.
 You should use this file to configure the mod.
 In this file you can see some general settings and metrics settings.
 
 ### General settings
 
-| Property          | Description                                                      | Default value |
-|-------------------|------------------------------------------------------------------|---------------|
-| `server-port`     | Port on what the web server will listen for requests             | `25585`       |
-| `update-interval` | Interval between gauge metrics updates in milliseconds           | `1000`        |
-| `use-spark`       | If set to `false`, FabricExporter will be independent from Spark | `true`        |
+| Property                      | Description                                                                     | Default value |
+|-------------------------------|---------------------------------------------------------------------------------|---------------|
+| `server-port`                 | Port on what the web server will listen for requests                            | `25585`       |
+| `update-interval`             | Interval between gauge metrics updates in milliseconds                          | `1000`        |
+| `use-spark`                   | If set to `false`, FabricExporter will be independent from Spark                | `true`        |
+| `export-default-jvm-metrics`  | If set to `true`, advanced metrics for JVM will be exported                     | `true`        |
+| `strip-identifier-namespaces` | If set to `false`, FabricExporter will provide full identifiers in label values | `true`        |
 
 ### Metrics settings
 
@@ -98,4 +110,5 @@ If you can't find property for some metrics, you can manually add it.
 All metrics are enabled by default.
 
 ## License
+
 MIT license. Read more in [LICENSE](LICENSE)
