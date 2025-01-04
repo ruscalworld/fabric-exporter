@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.TypeFilter;
 import ru.ruscalworld.fabricexporter.FabricExporter;
 import ru.ruscalworld.fabricexporter.metrics.Metric;
-import ru.ruscalworld.fabricexporter.util.TextUtil;
+import ru.ruscalworld.fabricexporter.util.IdentifierFormatter;
 
 import java.util.HashMap;
 
@@ -25,26 +25,34 @@ public class Entities extends Metric {
         }
     };
 
-    public Entities() {
+    private final IdentifierFormatter identifierFormatter;
+
+    public Entities(IdentifierFormatter identifierFormatter) {
         super("entities", "Amount of currently loaded entities", "world", "group", "type");
+        this.identifierFormatter = identifierFormatter;
     }
 
     @Override
     public void update(FabricExporter exporter) {
         for (ServerWorld world : exporter.getServer().getWorlds()) {
-            HashMap<String, Integer> currentWorldEntities = new HashMap<>();
-            Registries.ENTITY_TYPE.getIds().forEach(id -> currentWorldEntities.put(id.getPath(), 0));
+            HashMap<Identifier, Integer> currentWorldEntities = new HashMap<>();
+            Registries.ENTITY_TYPE.getIds().forEach(id -> currentWorldEntities.put(id, 0));
 
             world.getEntitiesByType(ENTITY_FILTER, entity -> true).forEach(entity -> {
-                String name = Registries.ENTITY_TYPE.getId(entity.getType()).getPath();
-                Integer typeCount = currentWorldEntities.getOrDefault(name, 0);
-                currentWorldEntities.put(name, typeCount + 1);
+                Identifier entityTypeId = Registries.ENTITY_TYPE.getId(entity.getType());
+                Integer typeCount = currentWorldEntities.getOrDefault(entityTypeId, 0);
+                currentWorldEntities.put(entityTypeId, typeCount + 1);
             });
 
-            for (String type : currentWorldEntities.keySet()) {
-                Integer count = currentWorldEntities.get(type);
-                EntityType<?> entityType = Registries.ENTITY_TYPE.get(Identifier.of(type));
-                this.getGauge().labels(TextUtil.getWorldName(world), entityType.getSpawnGroup().getName(), type).set(count);
+            for (Identifier entityTypeId : currentWorldEntities.keySet()) {
+                Integer count = currentWorldEntities.get(entityTypeId);
+                EntityType<?> entityType = Registries.ENTITY_TYPE.get(entityTypeId);
+
+                this.getGauge().labels(
+                        identifierFormatter.getWorldName(world),
+                        entityType.getSpawnGroup().getName(),
+                        identifierFormatter.format(entityTypeId)
+                ).set(count);
             }
         }
     }

@@ -9,6 +9,7 @@ public class MainConfig extends Config {
     private int updateInterval;
     private boolean useSpark;
     private boolean exportJvmDefaults;
+    private boolean stripIdentifierNamespaces;
 
     public MainConfig(String name) {
         super(name);
@@ -27,6 +28,7 @@ public class MainConfig extends Config {
         this.setShouldUseSpark(properties.getProperty("use-spark", "true").equalsIgnoreCase("true"));
 
         this.setShouldExportJvmDefaults(properties.getProperty("export-default-jvm-metrics", "true").equalsIgnoreCase("true"));
+        this.setShouldStripIdentifierNamespaces(properties.getProperty("strip-identifier-namespaces", "true").equalsIgnoreCase("true"));
     }
 
     public int getPort() {
@@ -59,5 +61,13 @@ public class MainConfig extends Config {
 
     public void setShouldExportJvmDefaults(boolean exportJvmDefaults) {
         this.exportJvmDefaults = exportJvmDefaults;
+    }
+
+    public boolean shouldStripIdentifierNamespaces() {
+        return stripIdentifierNamespaces;
+    }
+
+    public void setShouldStripIdentifierNamespaces(boolean stripIdentifierNamespaces) {
+        this.stripIdentifierNamespaces = stripIdentifierNamespaces;
     }
 }
