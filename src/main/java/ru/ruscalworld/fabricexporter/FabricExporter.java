@@ -30,8 +30,8 @@ public class FabricExporter implements ModInitializer {
             config.load();
             this.setConfig(config);
         } catch (IOException e) {
-            FabricExporter.getLogger().fatal("Unable to load config");
-            e.printStackTrace();
+            logger.fatal("Unable to load config", e);
+            return;
         }
 
         Optional<ModContainer> spark = FabricLoader.getInstance().getModContainer("spark");
@@ -54,11 +54,11 @@ public class FabricExporter implements ModInitializer {
             try {
                 int port = this.getConfig().getPort();
                 this.setHttpServer(new HTTPServer(port));
-                FabricExporter.getLogger().info("Prometheus exporter server is now listening on port " + port);
+                logger.info("Prometheus exporter server is now listening on port {}", port);
 
                 this.getMetricRegistry().runUpdater();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("Unable to start prometheus exporter server", e);
             }
         });
 
