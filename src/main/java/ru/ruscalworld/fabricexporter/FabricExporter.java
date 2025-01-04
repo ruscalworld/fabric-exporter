@@ -10,6 +10,7 @@ import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.ruscalworld.fabricexporter.config.MainConfig;
+import ru.ruscalworld.fabricexporter.util.IdentifierFormatter;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class FabricExporter implements ModInitializer {
     private MainConfig config;
     private HTTPServer httpServer;
     private MetricRegistry metricRegistry;
+    private IdentifierFormatter identifierFormatter;
 
     @Override
     public void onInitialize() {
@@ -30,8 +32,8 @@ public class FabricExporter implements ModInitializer {
             config.load();
             this.setConfig(config);
         } catch (IOException e) {
-            FabricExporter.getLogger().fatal("Unable to load config");
-            e.printStackTrace();
+            logger.fatal("Unable to load config", e);
+            return;
         }
 
         Optional<ModContainer> spark = FabricLoader.getInstance().getModContainer("spark");
@@ -40,6 +42,8 @@ public class FabricExporter implements ModInitializer {
             logger.warn("Spark mod is not installed, but \"use-spark\" property is enabled! TPS and MSPT metrics will be disabled.");
             logger.warn("To fix this, you should either set \"use-spark\" in exporter.properties to false or install Spark mod (https://spark.lucko.me).");
         }
+
+        this.setIdentifierFormatter(new IdentifierFormatter(config.shouldStripIdentifierNamespaces()));
 
         MetricRegistry metricRegistry = new MetricRegistry(this);
         metricRegistry.registerDefault();
@@ -54,11 +58,11 @@ public class FabricExporter implements ModInitializer {
             try {
                 int port = this.getConfig().getPort();
                 this.setHttpServer(new HTTPServer(port));
-                FabricExporter.getLogger().info("Prometheus exporter server is now listening on port " + port);
+                logger.info("Prometheus exporter server is now listening on port {}", port);
 
                 this.getMetricRegistry().runUpdater();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("Unable to start prometheus exporter server", e);
             }
         });
 
@@ -108,5 +112,13 @@ public class FabricExporter implements ModInitializer {
 
     public static FabricExporter getInstance() {
         return instance;
+    }
+
+    public IdentifierFormatter getIdentifierFormatter() {
+        return identifierFormatter;
+    }
+
+    private void setIdentifierFormatter(IdentifierFormatter identifierFormatter) {
+        this.identifierFormatter = identifierFormatter;
     }
 }
