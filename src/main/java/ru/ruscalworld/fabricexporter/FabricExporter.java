@@ -10,6 +10,7 @@ import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.ruscalworld.fabricexporter.config.MainConfig;
+import ru.ruscalworld.fabricexporter.util.IdentifierFormatter;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class FabricExporter implements ModInitializer {
     private MainConfig config;
     private HTTPServer httpServer;
     private MetricRegistry metricRegistry;
+    private IdentifierFormatter identifierFormatter;
 
     @Override
     public void onInitialize() {
@@ -40,6 +42,8 @@ public class FabricExporter implements ModInitializer {
             logger.warn("Spark mod is not installed, but \"use-spark\" property is enabled! TPS and MSPT metrics will be disabled.");
             logger.warn("To fix this, you should either set \"use-spark\" in exporter.properties to false or install Spark mod (https://spark.lucko.me).");
         }
+
+        this.setIdentifierFormatter(new IdentifierFormatter(config.shouldStripIdentifierNamespaces()));
 
         MetricRegistry metricRegistry = new MetricRegistry(this);
         metricRegistry.registerDefault();
@@ -108,5 +112,13 @@ public class FabricExporter implements ModInitializer {
 
     public static FabricExporter getInstance() {
         return instance;
+    }
+
+    public IdentifierFormatter getIdentifierFormatter() {
+        return identifierFormatter;
+    }
+
+    private void setIdentifierFormatter(IdentifierFormatter identifierFormatter) {
+        this.identifierFormatter = identifierFormatter;
     }
 }

@@ -3,6 +3,7 @@ package ru.ruscalworld.fabricexporter;
 import io.prometheus.client.Collector;
 import io.prometheus.client.Counter;
 import io.prometheus.client.SimpleCollector;
+import org.jetbrains.annotations.NotNull;
 import ru.ruscalworld.fabricexporter.config.MainConfig;
 import ru.ruscalworld.fabricexporter.metrics.Metric;
 import ru.ruscalworld.fabricexporter.metrics.spark.MillisPerTick;
@@ -12,6 +13,7 @@ import ru.ruscalworld.fabricexporter.metrics.world.Entities;
 import ru.ruscalworld.fabricexporter.metrics.world.LoadedChunks;
 import ru.ruscalworld.fabricexporter.metrics.world.OnlinePlayers;
 import ru.ruscalworld.fabricexporter.metrics.world.TotalLoadedChunks;
+import ru.ruscalworld.fabricexporter.util.IdentifierFormatter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,10 +25,12 @@ public class MetricRegistry {
     private final List<Metric> metrics = new ArrayList<>();
     private final HashMap<String, Collector> customMetrics = new HashMap<>();
     private final Timer metricUpdaterTimer;
+    private final IdentifierFormatter identifierFormatter;
 
-    public MetricRegistry(FabricExporter exporter) {
+    public MetricRegistry(@NotNull FabricExporter exporter) {
         this.exporter = exporter;
         metricUpdaterTimer = new Timer("Metric Updater Timer");
+        identifierFormatter = exporter.getIdentifierFormatter();
     }
 
     public void runUpdater() {
@@ -37,10 +41,10 @@ public class MetricRegistry {
     }
 
     public void registerDefault() {
-        this.registerMetric(new OnlinePlayers());
-        this.registerMetric(new Entities());
-        this.registerMetric(new LoadedChunks());
-        this.registerMetric(new TotalLoadedChunks());
+        this.registerMetric(new OnlinePlayers(identifierFormatter));
+        this.registerMetric(new Entities(identifierFormatter));
+        this.registerMetric(new LoadedChunks(identifierFormatter));
+        this.registerMetric(new TotalLoadedChunks(identifierFormatter));
 
         if (this.getExporter().getConfig().shouldUseSpark()) {
             this.registerMetric(new TicksPerSecond());
