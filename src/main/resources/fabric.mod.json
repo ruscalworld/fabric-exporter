@@ -21,8 +21,8 @@
     "fabricexporter.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.15",
-    "minecraft": ">=1.21",
+    "fabricloader": ">=0.16.4",
+    "minecraft": ">=1.21.6",
     "fabric": "*"
   },
   "recommends": {
