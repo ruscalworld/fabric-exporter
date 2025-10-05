@@ -3,13 +3,20 @@ import net.fabricmc.loom.task.RemapJarTask
 plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'com.modrinth.minotaur' version '2.+'
-    id 'fabric-loom' version '1.10+'
+    id 'fabric-loom' version "$loom_version"
     id 'maven-publish'
 }
 
 repositories {
     maven {
         url 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+    maven {
+        name 'luck-repo'
+        url 'https://repo.lucko.me/'
+        content {
+            includeModule 'me.lucko', 'spark-api'
+        }
     }
 }
 
