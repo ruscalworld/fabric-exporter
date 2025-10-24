@@ -28,7 +28,6 @@ You can disable any of these metrics in [config](src/main/resources/config/expor
 | Prometheus name                 | Description                                                                             | Config property              | Collected by      |
 |---------------------------------|-----------------------------------------------------------------------------------------|------------------------------|-------------------|
 | `minecraft_loaded_chunks`       | Amount of currently loaded chunks on server                                             | `enable-loaded-chunks`       | Minecraft         |
-| `minecraft_total_loaded_chunks` | Amount of total loaded chunks on server                                                 | `enable-total-loaded-chunks` | Minecraft         |
 | `minecraft_mspt`                | Count of milliseconds per tick (MSPT)                                                   | `enable-mspt`                | Spark             |
 | `minecraft_tps`                 | Count of ticks per second (TPS)                                                         | `enable-tps`                 | Spark             |
 | `minecraft_players_online`      | Amount of currently online players on your server                                       | `enable-players-online`      | FabricExporter    |
