@@ -12,7 +12,6 @@ import ru.ruscalworld.fabricexporter.metrics.spark.TicksPerSecond;
 import ru.ruscalworld.fabricexporter.metrics.world.Entities;
 import ru.ruscalworld.fabricexporter.metrics.world.LoadedChunks;
 import ru.ruscalworld.fabricexporter.metrics.world.OnlinePlayers;
-import ru.ruscalworld.fabricexporter.metrics.world.TotalLoadedChunks;
 import ru.ruscalworld.fabricexporter.util.IdentifierFormatter;
 
 import java.util.ArrayList;
@@ -44,7 +43,6 @@ public class MetricRegistry {
         this.registerMetric(new OnlinePlayers(identifierFormatter));
         this.registerMetric(new Entities(identifierFormatter));
         this.registerMetric(new LoadedChunks(identifierFormatter));
-        this.registerMetric(new TotalLoadedChunks(identifierFormatter));
 
         if (this.getExporter().getConfig().shouldUseSpark()) {
             this.registerMetric(new TicksPerSecond());
