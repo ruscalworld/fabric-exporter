@@ -16,7 +16,7 @@ public class TotalLoadedChunks extends Metric {
     @Override
     public void update(FabricExporter exporter) {
         for (ServerWorld world : exporter.getServer().getWorlds()) {
-            this.getGauge().labels(identifierFormatter.getWorldName(world)).set(world.getChunkManager().getTotalChunksLoadedCount());
+            this.getGauge().labels(identifierFormatter.getWorldName(world)).set(world.getChunkManager().getLoadedChunkCount());
         }
     }
 }
