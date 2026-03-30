@@ -2,9 +2,9 @@
   "required": true,
   "minVersion": "0.8",
   "package": "ru.ruscalworld.fabricexporter.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_17",
   "server": [
-    "ServerHandshakeNetworkHandlerMixin"
+    "ServerHandshakePacketListenerImplMixin"
   ],
   "injectors": {
     "defaultRequire": 1

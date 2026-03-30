@@ -1,7 +1,7 @@
 package ru.ruscalworld.fabricexporter.util;
 
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 public class IdentifierFormatter {
@@ -16,7 +16,7 @@ public class IdentifierFormatter {
         return identifier.toString();
     }
 
-    public String getWorldName(@NotNull ServerWorld world) {
-        return this.format(world.getRegistryKey().getValue());
+    public String getWorldName(@NotNull ServerLevel world) {
+        return this.format(world.dimension().identifier());
     }
 }
