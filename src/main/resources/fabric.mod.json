@@ -21,9 +21,10 @@
     "fabricexporter.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.16.4",
-    "minecraft": ">=1.21.9",
-    "fabric": "*"
+    "fabricloader": ">=0.18.4",
+    "minecraft": ">=26.1",
+    "java": ">=25",
+    "fabric-api": "*"
   },
   "recommends": {
     "spark": "*"

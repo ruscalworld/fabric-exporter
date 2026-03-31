@@ -1,11 +1,11 @@
 package ru.ruscalworld.fabricexporter.metrics.world;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.registry.Registries;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.TypeFilter;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.entity.EntityTypeTest;
 import ru.ruscalworld.fabricexporter.FabricExporter;
 import ru.ruscalworld.fabricexporter.metrics.Metric;
 import ru.ruscalworld.fabricexporter.util.IdentifierFormatter;
@@ -13,9 +13,9 @@ import ru.ruscalworld.fabricexporter.util.IdentifierFormatter;
 import java.util.HashMap;
 
 public class Entities extends Metric {
-    private static final TypeFilter<Entity, ?> ENTITY_FILTER = new TypeFilter<>() {
+    private static final EntityTypeTest<Entity, ?> ENTITY_FILTER = new EntityTypeTest<>() {
         @Override
-        public Entity downcast(Entity entity) {
+        public Entity tryCast(Entity entity) {
             return entity;
         }
 
@@ -34,23 +34,23 @@ public class Entities extends Metric {
 
     @Override
     public void update(FabricExporter exporter) {
-        for (ServerWorld world : exporter.getServer().getWorlds()) {
+        for (ServerLevel world : exporter.getServer().getAllLevels()) {
             HashMap<Identifier, Integer> currentWorldEntities = new HashMap<>();
-            Registries.ENTITY_TYPE.getIds().forEach(id -> currentWorldEntities.put(id, 0));
+            BuiltInRegistries.ENTITY_TYPE.keySet().forEach(id -> currentWorldEntities.put(id, 0));
 
-            world.getEntitiesByType(ENTITY_FILTER, entity -> true).forEach(entity -> {
-                Identifier entityTypeId = Registries.ENTITY_TYPE.getId(entity.getType());
+            world.getEntities(ENTITY_FILTER, entity -> true).forEach(entity -> {
+                Identifier entityTypeId = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType());
                 Integer typeCount = currentWorldEntities.getOrDefault(entityTypeId, 0);
                 currentWorldEntities.put(entityTypeId, typeCount + 1);
             });
 
             for (Identifier entityTypeId : currentWorldEntities.keySet()) {
                 Integer count = currentWorldEntities.get(entityTypeId);
-                EntityType<?> entityType = Registries.ENTITY_TYPE.get(entityTypeId);
+                EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getValue(entityTypeId);
 
                 this.getGauge().labels(
                         identifierFormatter.getWorldName(world),
-                        entityType.getSpawnGroup().getName(),
+                        entityType.getCategory().getName(),
                         identifierFormatter.format(entityTypeId)
                 ).set(count);
             }

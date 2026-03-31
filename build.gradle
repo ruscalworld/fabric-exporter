@@ -1,10 +1,7 @@
-import net.fabricmc.loom.task.RemapJarTask
-
 plugins {
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
-    id 'com.modrinth.minotaur' version '2.+'
-    id 'fabric-loom' version "$loom_version"
-    id 'maven-publish'
+    id 'com.gradleup.shadow' version "${shadow_version}"
+    id 'com.modrinth.minotaur' version "${minotaur_version}"
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
 }
 
 repositories {
@@ -20,18 +17,21 @@ repositories {
     }
 }
 
-archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
 
 dependencies {
     //to change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
@@ -60,6 +60,7 @@ processResources {
 // this fixes some edge cases with special characters not displaying correctly
 // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
 tasks.withType(JavaCompile).configureEach {
+    it.options.release = 25
     options.encoding = "UTF-8"
 }
 
@@ -69,8 +70,8 @@ java {
     // If you remove this line, sources will not be generated.
     withSourcesJar()
 
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 jar {
@@ -78,7 +79,7 @@ jar {
 }
 
 shadowJar {
-    archiveClassifier = 'shaded-dev'
+    archiveClassifier = ""
 
     dependencies {
         include dependency("io.prometheus:simpleclient:${project.prometheus_version}")
@@ -88,19 +89,12 @@ shadowJar {
     }
 }
 
-tasks.register('remapShadowJar', RemapJarTask) {
-    dependsOn shadowJar
-    input = shadowJar.archiveFile
-    archiveFileName = shadowJar.archiveFileName.get().replaceAll('-shaded-dev\\.jar\$', '.jar')
-    addNestedDependencies = true
-}
-
 modrinth {
     token = System.getenv('MODRINTH_TOKEN')
     projectId = 'dbVXHSlv'
     versionNumber = project.mod_version
     versionType = 'release'
-    uploadFile = remapShadowJar
+    uploadFile = shadowJar.archiveFile.get().asFile
 
     gameVersions.add(project.minecraft_version)
     loaders.add('fabric')
@@ -111,4 +105,4 @@ modrinth {
     }
 }
 
-assemble.dependsOn(remapShadowJar)
+tasks.modrinth.dependsOn(build)
