@@ -23,6 +23,10 @@ public abstract class Metric {
         return gauge;
     }
 
+    public void register() {
+        this.gauge.register();
+    }
+
     public String getName() {
         return name;
     }

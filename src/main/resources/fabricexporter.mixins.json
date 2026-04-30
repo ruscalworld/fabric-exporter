@@ -4,7 +4,8 @@
   "package": "ru.ruscalworld.fabricexporter.mixin",
   "compatibilityLevel": "JAVA_25",
   "server": [
-    "ServerHandshakePacketListenerImplMixin"
+    "ServerHandshakePacketListenerImplMixin",
+    "ServerLevelMixin"
   ],
   "injectors": {
     "defaultRequire": 1
