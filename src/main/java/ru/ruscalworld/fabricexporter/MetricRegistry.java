@@ -39,6 +39,9 @@ public class MetricRegistry {
 
     public void registerDefault() {
         this.registerMetric(new OnlinePlayers(identifierFormatter));
+        this.registerMetric(new PlayerPing(identifierFormatter,
+                this.getExporter().getConfig().shouldCollectPlayerIP(),
+                this.getExporter().getConfig().shouldAnonymizePlayerIP()));
         this.registerMetric(new Entities(identifierFormatter));
         this.registerMetric(new LoadedChunks(identifierFormatter));
         this.registerMetric(new SpawnData.MobCount(identifierFormatter));

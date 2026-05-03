@@ -10,6 +10,8 @@ public class MainConfig extends Config {
     private boolean useSpark;
     private boolean exportJvmDefaults;
     private boolean stripIdentifierNamespaces;
+    private boolean collectPlayerIP;
+    private boolean anonymizePlayerIP;
 
     public MainConfig(String name) {
         super(name);
@@ -29,6 +31,9 @@ public class MainConfig extends Config {
 
         this.setShouldExportJvmDefaults(properties.getProperty("export-default-jvm-metrics", "true").equalsIgnoreCase("true"));
         this.setShouldStripIdentifierNamespaces(properties.getProperty("strip-identifier-namespaces", "true").equalsIgnoreCase("true"));
+
+        this.setShouldCollectPlayerIP(properties.getProperty("player-collect-ip", "false").equalsIgnoreCase("true"));
+        this.setShouldAnonymizePlayerIP(properties.getProperty("player-anonymize-ip", "true").equalsIgnoreCase("true"));
     }
 
     public int getPort() {
@@ -70,4 +75,21 @@ public class MainConfig extends Config {
     public void setShouldStripIdentifierNamespaces(boolean stripIdentifierNamespaces) {
         this.stripIdentifierNamespaces = stripIdentifierNamespaces;
     }
+
+    public boolean shouldCollectPlayerIP() {
+        return collectPlayerIP;
+    }
+
+    public void setShouldCollectPlayerIP(boolean collectPlayerIP) {
+        this.collectPlayerIP = collectPlayerIP;
+    }
+
+    public boolean shouldAnonymizePlayerIP() {
+        return anonymizePlayerIP;
+    }
+
+    public void setShouldAnonymizePlayerIP(boolean anonymizePlayerIP) {
+        this.anonymizePlayerIP = anonymizePlayerIP;
+    }
+
 }

@@ -25,15 +25,19 @@ Here is a list of metrics that are collected by FabricExporter.
 
 You can disable any of these metrics in [config](src/main/resources/config/exporter.properties).
 
-| Prometheus name                 | Description                                                                             | Config property              | Collected by      |
-|---------------------------------|-----------------------------------------------------------------------------------------|------------------------------|-------------------|
-| `minecraft_loaded_chunks`       | Amount of currently loaded chunks on server                                             | `enable-loaded-chunks`       | Minecraft         |
-| `minecraft_mspt`                | Count of milliseconds per tick (MSPT)                                                   | `enable-mspt`                | Spark             |
-| `minecraft_tps`                 | Count of ticks per second (TPS)                                                         | `enable-tps`                 | Spark             |
-| `minecraft_players_online`      | Amount of currently online players on your server                                       | `enable-players-online`      | FabricExporter    |
-| `minecraft_entities`            | Amount of currently loaded entities on your server                                      | `enable-entities`            | FabricExporter    |
-| `minecraft_handshakes_total`    | Count of handshake requests                                                             | `enable-handshakes`          | FabricExporter    |
-| `jvm_*`                         | JVM metrics collected by [Prometheus client](https://github.com/prometheus/client_java) | `export-jvm-metrics`         | Prometheus client |
+| Prometheus name                        | Description                                                                             | Config property                     | Collected by      |
+|----------------------------------------|-----------------------------------------------------------------------------------------|-------------------------------------|-------------------|
+| `minecraft_loaded_chunks`              | Amount of currently loaded chunks on server                                             | `enable-loaded-chunks`              | Minecraft         |
+| `minecraft_mspt`                       | Count of milliseconds per tick (MSPT)                                                   | `enable-mspt`                       | Spark             |
+| `minecraft_tps`                        | Count of ticks per second (TPS)                                                         | `enable-tps`                        | Spark             |
+| `minecraft_players_online`             | Amount of currently online players on your server                                       | `enable-players-online`             | FabricExporter    |
+| `minecraft_player_ping`                | Current ping of online players on your server                                           | `enable-player-ping`                | FabricExporter    |
+| `minecraft_entities`                   | Amount of currently loaded entities on your server                                      | `enable-entities`                   | FabricExporter    |
+| `minecraft_item_entity_by_item`        | Amount of currently loaded item entities by item on your server                         | `enable-item-entity-by-item`        | FabricExporter    |
+| `minecraft_handshakes_total`           | Count of handshake requests                                                             | `enable-handshakes`                 | FabricExporter    |
+| `minecraft_mob_count_spawn_data`       | Amount of per category mobs from spawn data                                             | `enable-mob-count-spawn-data`       | FabricExporter    |
+| `minecraft_spawnable_chunk_spawn_data` | Amount of spawnable chunks from spawn data                                              | `enable-spawnable-chunk-spawn-data` | FabricExporter    |
+| `jvm_*`                                | JVM metrics collected by [Prometheus client](https://github.com/prometheus/client_java) | `export-jvm-metrics`                | Prometheus client |
 
 ## Getting started
 
@@ -91,13 +95,15 @@ In this file you can see some general settings and metrics settings.
 
 ### General settings
 
-| Property                      | Description                                                                     | Default value |
-|-------------------------------|---------------------------------------------------------------------------------|---------------|
-| `server-port`                 | Port on what the web server will listen for requests                            | `25585`       |
-| `update-interval`             | Interval between gauge metrics updates in milliseconds                          | `1000`        |
-| `use-spark`                   | If set to `false`, FabricExporter will be independent from Spark                | `true`        |
-| `export-default-jvm-metrics`  | If set to `true`, advanced metrics for JVM will be exported                     | `true`        |
-| `strip-identifier-namespaces` | If set to `false`, FabricExporter will provide full identifiers in label values | `true`        |
+| Property                      | Description                                                                        | Default value |
+|-------------------------------|------------------------------------------------------------------------------------|---------------|
+| `server-port`                 | Port on what the web server will listen for requests                               | `25585`       |
+| `update-interval`             | Interval between gauge metrics updates in milliseconds                             | `1000`        |
+| `use-spark`                   | If set to `false`, FabricExporter will be independent from Spark                   | `true`        |
+| `export-default-jvm-metrics`  | If set to `true`, advanced metrics for JVM will be exported                        | `true`        |
+| `strip-identifier-namespaces` | If set to `false`, FabricExporter will provide full identifiers in label values    | `true`        |
+| `player-collect-ip`           | If set to `true`, FabricExporter will provide the ip in player ping label values   | `false`       |
+| `player-anonymize-ip`         | If set to `true`, FabricExporter will anonymize the ip in player ping label values | `true`        |
 
 ### Metrics settings
 
