@@ -9,12 +9,13 @@ import ru.ruscalworld.fabricexporter.metrics.Metric;
 import ru.ruscalworld.fabricexporter.util.IdentifierFormatter;
 
 public abstract class SpawnData {
-    private SpawnData(){
+    private SpawnData() {
     }
 
     public static class MobCount extends Metric {
         private static final Object2IntMap<MobCategory> EMPTY = new Object2IntOpenHashMap<>(0);
         private final IdentifierFormatter identifierFormatter;
+
         public MobCount(IdentifierFormatter identifierFormatter) {
             super("mob_count_spawn_data", "Per category mob counts from spawn data", "world", "category");
             this.identifierFormatter = identifierFormatter;
@@ -29,14 +30,16 @@ public abstract class SpawnData {
                 if (spawnState != null) {
                     counts = spawnState.getMobCategoryCounts();
                 }
-                for (var catagory : MobCategory.values()) {
-                    this.getGauge().labels(worldName, catagory.getSerializedName()).set(counts.getOrDefault(catagory, 0));
+                for (var category : MobCategory.values()) {
+                    this.getGauge().labels(worldName, category.getSerializedName()).set(counts.getOrDefault(category, 0));
                 }
             }
         }
     }
+
     public static class SpawnableChunkCount extends Metric {
         private final IdentifierFormatter identifierFormatter;
+
         public SpawnableChunkCount(IdentifierFormatter identifierFormatter) {
             super("spawnable_chunk_spawn_data", "Spawnable chunk count from spawn data", "world");
             this.identifierFormatter = identifierFormatter;
