@@ -102,8 +102,8 @@ In this file you can see some general settings and metrics settings.
 | `use-spark`                   | If set to `false`, FabricExporter will be independent from Spark                   | `true`        |
 | `export-default-jvm-metrics`  | If set to `true`, advanced metrics for JVM will be exported                        | `true`        |
 | `strip-identifier-namespaces` | If set to `false`, FabricExporter will provide full identifiers in label values    | `true`        |
-| `player-collect-ip`           | If set to `true`, FabricExporter will provide the ip in player ping label values   | `false`       |
-| `player-anonymize-ip`         | If set to `true`, FabricExporter will anonymize the ip in player ping label values | `true`        |
+| `collect-player-ip`           | If set to `true`, FabricExporter will provide the ip in player ping label values   | `false`       |
+| `anonymize-player-ip`         | If set to `true`, FabricExporter will anonymize the ip in player ping label values | `true`        |
 
 ### Metrics settings
 

@@ -32,8 +32,8 @@ public class MainConfig extends Config {
         this.setShouldExportJvmDefaults(properties.getProperty("export-default-jvm-metrics", "true").equalsIgnoreCase("true"));
         this.setShouldStripIdentifierNamespaces(properties.getProperty("strip-identifier-namespaces", "true").equalsIgnoreCase("true"));
 
-        this.setShouldCollectPlayerIP(properties.getProperty("player-collect-ip", "false").equalsIgnoreCase("true"));
-        this.setShouldAnonymizePlayerIP(properties.getProperty("player-anonymize-ip", "true").equalsIgnoreCase("true"));
+        this.setShouldCollectPlayerIP(properties.getProperty("collect-player-ip", "false").equalsIgnoreCase("true"));
+        this.setShouldAnonymizePlayerIP(properties.getProperty("anonymize-player-ip", "true").equalsIgnoreCase("true"));
     }
 
     public int getPort() {
