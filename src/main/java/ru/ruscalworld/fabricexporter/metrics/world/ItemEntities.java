@@ -11,11 +11,11 @@ import ru.ruscalworld.fabricexporter.util.IdentifierFormatter;
 
 import java.util.HashMap;
 
-public class ItemEntityTypes extends Metric {
+public class ItemEntities extends Metric {
     private final IdentifierFormatter identifierFormatter;
 
-    public ItemEntityTypes(IdentifierFormatter identifierFormatter) {
-        super("item_entity_by_item", "Item entities by item", "world", "item");
+    public ItemEntities(IdentifierFormatter identifierFormatter) {
+        super("item_entities", "Item entities per item type", "world", "item");
         this.identifierFormatter = identifierFormatter;
     }
 

@@ -46,7 +46,7 @@ public class MetricRegistry {
         this.registerMetric(new LoadedChunks(identifierFormatter));
         this.registerMetric(new SpawnData.MobCount(identifierFormatter));
         this.registerMetric(new SpawnData.SpawnableChunkCount(identifierFormatter));
-        this.registerMetric(new ItemEntityTypes(identifierFormatter));
+        this.registerMetric(new ItemEntities(identifierFormatter));
 
         if (this.getExporter().getConfig().shouldUseSpark()) {
             this.registerMetric(new TicksPerSecond());

@@ -33,11 +33,11 @@ You can disable any of these metrics in [config](src/main/resources/config/expor
 | `minecraft_players_online`             | Amount of currently online players on your server                                       | `enable-players-online`             | FabricExporter    |
 | `minecraft_player_ping`                | Current ping of online players on your server                                           | `enable-player-ping`                | FabricExporter    |
 | `minecraft_entities`                   | Amount of currently loaded entities on your server                                      | `enable-entities`                   | FabricExporter    |
-| `minecraft_item_entity_by_item`        | Amount of currently loaded item entities by item on your server                         | `enable-item-entity-by-item`        | FabricExporter    |
 | `minecraft_handshakes_total`           | Count of handshake requests                                                             | `enable-handshakes`                 | FabricExporter    |
 | `minecraft_mob_count_spawn_data`       | Amount of per category mobs from spawn data                                             | `enable-mob-count-spawn-data`       | FabricExporter    |
 | `minecraft_spawnable_chunk_spawn_data` | Amount of spawnable chunks from spawn data                                              | `enable-spawnable-chunk-spawn-data` | FabricExporter    |
 | `jvm_*`                                | JVM metrics collected by [Prometheus client](https://github.com/prometheus/client_java) | `export-jvm-metrics`                | Prometheus client |
+| `minecraft_item_entities`    | Amount of currently loaded item entities by item on your server                         | `enable-item-entities`    | FabricExporter    |
 
 ## Getting started
 
