@@ -44,8 +44,8 @@ public class MetricRegistry {
                 this.getExporter().getConfig().shouldAnonymizePlayerIP()));
         this.registerMetric(new Entities(identifierFormatter));
         this.registerMetric(new LoadedChunks(identifierFormatter));
-        this.registerMetric(new SpawnData.MobCount(identifierFormatter));
-        this.registerMetric(new SpawnData.SpawnableChunkCount(identifierFormatter));
+        this.registerMetric(new SpawnedMobs(identifierFormatter));
+        this.registerMetric(new SpawnableChunks(identifierFormatter));
         this.registerMetric(new ItemEntities(identifierFormatter));
 
         if (this.getExporter().getConfig().shouldUseSpark()) {
