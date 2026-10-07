@@ -9,9 +9,7 @@ import ru.ruscalworld.fabricexporter.metrics.Metric;
 import ru.ruscalworld.fabricexporter.metrics.spark.MillisPerTick;
 import ru.ruscalworld.fabricexporter.metrics.spark.SparkMetric;
 import ru.ruscalworld.fabricexporter.metrics.spark.TicksPerSecond;
-import ru.ruscalworld.fabricexporter.metrics.world.Entities;
-import ru.ruscalworld.fabricexporter.metrics.world.LoadedChunks;
-import ru.ruscalworld.fabricexporter.metrics.world.OnlinePlayers;
+import ru.ruscalworld.fabricexporter.metrics.world.*;
 import ru.ruscalworld.fabricexporter.util.IdentifierFormatter;
 
 import java.util.ArrayList;
@@ -41,8 +39,14 @@ public class MetricRegistry {
 
     public void registerDefault() {
         this.registerMetric(new OnlinePlayers(identifierFormatter));
+        this.registerMetric(new PlayerPing(identifierFormatter,
+                this.getExporter().getConfig().shouldCollectPlayerIP(),
+                this.getExporter().getConfig().shouldAnonymizePlayerIP()));
         this.registerMetric(new Entities(identifierFormatter));
         this.registerMetric(new LoadedChunks(identifierFormatter));
+        this.registerMetric(new SpawnedMobs(identifierFormatter));
+        this.registerMetric(new SpawnableChunks(identifierFormatter));
+        this.registerMetric(new ItemEntities(identifierFormatter));
 
         if (this.getExporter().getConfig().shouldUseSpark()) {
             this.registerMetric(new TicksPerSecond());
@@ -61,7 +65,7 @@ public class MetricRegistry {
         if (metric instanceof SparkMetric && !config.shouldUseSpark()) return;
         if (this.isDisabled(metric.getName())) return;
 
-        metric.getGauge().register();
+        metric.register();
         this.metrics.add(metric);
     }
 
