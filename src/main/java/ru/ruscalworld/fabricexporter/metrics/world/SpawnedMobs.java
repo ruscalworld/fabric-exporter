@@ -19,6 +19,9 @@ public class SpawnedMobs extends Metric {
 
     @Override
     public void update(FabricExporter exporter) {
+        // Drop series for worlds that no longer exist (e.g. dynamically
+        // created dimensions), otherwise their last value lingers forever.
+        this.getGauge().clear();
         for (ServerLevel world : exporter.getServer().getAllLevels()) {
             var spawnState = world.getChunkSource().getLastSpawnState();
             var worldName = this.identifierFormatter.getWorldName(world);

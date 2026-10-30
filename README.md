@@ -27,7 +27,7 @@ You can disable any of these metrics in [config](src/main/resources/config/expor
 
 | Prometheus name              | Description                                                                             | Config property           | Collected by      |
 |------------------------------|-----------------------------------------------------------------------------------------|---------------------------|-------------------|
-| `minecraft_loaded_chunks`    | Amount of currently loaded chunks on server                                             | `enable-loaded-chunks`    | Minecraft         |
+| `minecraft_loaded_chunks`    | Amount of currently loaded chunks on server by full chunk status ¹                      | `enable-loaded-chunks`    | Minecraft         |
 | `minecraft_mspt`             | Count of milliseconds per tick (MSPT)                                                   | `enable-mspt`             | Spark             |
 | `minecraft_tps`              | Count of ticks per second (TPS)                                                         | `enable-tps`              | Spark             |
 | `minecraft_players_online`   | Amount of currently online players on your server                                       | `enable-players-online`   | FabricExporter    |
@@ -96,14 +96,14 @@ In this file you can see some general settings and metrics settings.
 ### General settings
 
 | Property                      | Description                                                                        | Default value |
-|-------------------------------|------------------------------------------------------------------------------------|---------------|
-| `server-port`                 | Port on what the web server will listen for requests                               | `25585`       |
-| `update-interval`             | Interval between gauge metrics updates in milliseconds                             | `1000`        |
-| `use-spark`                   | If set to `false`, FabricExporter will be independent from Spark                   | `true`        |
-| `export-default-jvm-metrics`  | If set to `true`, advanced metrics for JVM will be exported                        | `true`        |
-| `strip-identifier-namespaces` | If set to `false`, FabricExporter will provide full identifiers in label values    | `true`        |
-| `collect-player-ip`           | If set to `true`, FabricExporter will provide the ip in player ping label values   | `false`       |
-| `anonymize-player-ip`         | If set to `true`, FabricExporter will anonymize the ip in player ping label values | `true`        |
+|-------------------------------|--------------------------------------------------------------------------------------------|---------------|
+| `server-port`                 | Port on what the web server will listen for requests                                       | `25585`       |
+| `update-interval`             | Interval between gauge metrics updates in milliseconds                                     | `1000`        |
+| `use-spark`                   | If set to `false`, FabricExporter will be independent from Spark                           | `true`        |
+| `export-default-jvm-metrics`  | If set to `true`, advanced metrics for JVM will be exported                                | `true`        |
+| `strip-identifier-namespaces` | If set to `false`, FabricExporter will provide full identifiers in label values            | `true`        |
+| `collect-player-ip`           | If set to `true`, FabricExporter will provide the ip in player ping label values           | `false`       |
+| `anonymize-player-ip`         | If set to `true`, only /24 (IPv4) or /48 (IPv6) prefix of the IP address will be exported  | `true`        |
 
 ### Metrics settings
 

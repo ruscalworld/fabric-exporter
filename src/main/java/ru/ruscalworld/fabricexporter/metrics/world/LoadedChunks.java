@@ -19,14 +19,25 @@ public class LoadedChunks extends Metric {
 
     @Override
     public void update(FabricExporter exporter) {
+        // Drop series for worlds that no longer exist (e.g. dynamically
+        // created dimensions), otherwise their last value lingers forever.
+        this.getGauge().clear();
         for (ServerLevel world : exporter.getServer().getAllLevels()) {
             var worldName = identifierFormatter.getWorldName(world);
             var counts = ((IChunkStatusByCountArrayGetter)world).fabricexporter$getChunkStatusCounter();
+            int accessibleCount = 0;
             for (var status : FullChunkStatus.values()) {
-                if (status == FullChunkStatus.INACCESSIBLE) continue;//We skip over this as its negative and represents the sum of all other status
+                // The counter of INACCESSIBLE is never incremented when a chunk gets loaded,
+                // so it just holds the negated sum of other statuses and can't be used directly
+                if (status == FullChunkStatus.INACCESSIBLE) continue;
+                accessibleCount += counts[status.ordinal()];
                 this.getGauge().labels(worldName, status.name().toLowerCase(Locale.ROOT)).set(counts[status.ordinal()]);
             }
-            this.getGauge().labels(worldName, "raw").set(world.getChunkSource().getLoadedChunksCount());
+
+            // Loaded chunks that haven't reached FULL status yet (e.g. ones being generated).
+            // Values are read off the server thread, so the difference may briefly become negative.
+            int inaccessibleCount = Math.max(0, world.getChunkSource().getLoadedChunksCount() - accessibleCount);
+            this.getGauge().labels(worldName, FullChunkStatus.INACCESSIBLE.name().toLowerCase(Locale.ROOT)).set(inaccessibleCount);
         }
     }
 }

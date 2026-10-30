@@ -1,6 +1,5 @@
 package ru.ruscalworld.fabricexporter.metrics.world;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.entity.EntityTypeTest;
@@ -21,27 +20,24 @@ public class ItemEntities extends Metric {
 
     @Override
     public void update(FabricExporter exporter) {
+        // Only item types that are currently present are exported, so series of
+        // despawned or picked up items must be dropped, otherwise they linger forever.
+        this.getGauge().clear();
         for (ServerLevel world : exporter.getServer().getAllLevels()) {
             HashMap<Identifier, Integer> currentWorldItems = new HashMap<>();
             String worldName = this.identifierFormatter.getWorldName(world);
 
-            BuiltInRegistries.ITEM.keySet().forEach(id -> currentWorldItems.put(id, 0));
-
             world.getEntities(EntityTypeTest.forClass(ItemEntity.class), item -> true).forEach(item -> {
                 item.getItem().typeHolder().unwrapKey().ifPresent(itemId -> {
-                    Integer typeCount = currentWorldItems.getOrDefault(itemId.identifier(), 0);
-                    currentWorldItems.put(itemId.identifier(), typeCount + 1);
+                    currentWorldItems.merge(itemId.identifier(), 1, Integer::sum);
                 });
             });
 
-            for (Identifier itemTypeId: currentWorldItems.keySet()) {
-                Integer count = currentWorldItems.get(itemTypeId);
-                if (count > 0) {
-                    this.getGauge().labels(
-                            worldName,
-                            identifierFormatter.format(itemTypeId)
-                    ).set(count);
-                }
+            for (Identifier itemTypeId : currentWorldItems.keySet()) {
+                this.getGauge().labels(
+                        worldName,
+                        identifierFormatter.format(itemTypeId)
+                ).set(currentWorldItems.get(itemTypeId));
             }
         }
     }
