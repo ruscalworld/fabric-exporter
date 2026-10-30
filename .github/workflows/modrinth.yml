@@ -3,12 +3,38 @@ name: Publish on Modrinth
 on:
   push:
     tags: [ 'v*' ]
+  workflow_dispatch:
+
+concurrency:
+  group: modrinth-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Check tag matches mod_version
+        if: github.ref_type == 'tag'
+        run: |
+          mod_version=$(grep '^mod_version=' gradle.properties | cut -d= -f2)
+          if [ "${GITHUB_REF_NAME}" != "v${mod_version}" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} does not match mod_version=${mod_version} in gradle.properties"
+            exit 1
+          fi
+      - name: Generate changelog
+        run: |
+          prev=$(git describe --tags --abbrev=0 --match 'v*' HEAD^ 2>/dev/null || true)
+          range=${prev:+$prev..}HEAD
+          {
+            echo 'CHANGELOG<<EOF'
+            git log --no-merges --pretty='- %s' "$range"
+            echo 'EOF'
+          } >> "$GITHUB_ENV"
       - name: Set up JDK 25
         uses: actions/setup-java@v5
         with:
