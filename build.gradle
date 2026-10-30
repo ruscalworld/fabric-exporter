@@ -92,8 +92,11 @@ shadowJar {
 modrinth {
     token = System.getenv('MODRINTH_TOKEN')
     projectId = 'dbVXHSlv'
-    versionNumber = project.mod_version
+    // mod_version is shared between Minecraft versions, so the game version is part of the Modrinth version number
+    versionNumber = "${project.mod_version}+${project.minecraft_version}"
+    versionName = "${project.mod_version} for Minecraft ${project.minecraft_version}"
     versionType = 'release'
+    changelog = System.getenv('CHANGELOG') ?: ''
     uploadFile = shadowJar.archiveFile.get().asFile
 
     gameVersions.add(project.minecraft_version)
