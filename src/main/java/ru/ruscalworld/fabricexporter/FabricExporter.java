@@ -3,6 +3,7 @@ package ru.ruscalworld.fabricexporter;
 import io.prometheus.client.exporter.HTTPServer;
 import io.prometheus.client.hotspot.DefaultExports;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
@@ -10,6 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.ruscalworld.fabricexporter.config.MainConfig;
+import ru.ruscalworld.fabricexporter.ducks.IChunkStatusByCountArrayGetter;
 import ru.ruscalworld.fabricexporter.util.IdentifierFormatter;
 
 import java.io.IOException;
@@ -69,6 +71,12 @@ public class FabricExporter implements ModInitializer {
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
             this.getHttpServer().close();
             this.getMetricRegistry().getMetricUpdaterTimer().cancel();
+        });
+
+        ServerChunkEvents.FULL_CHUNK_STATUS_CHANGE.register((lvl, chunk, oldChunkStatus, newChunkStatus)->{
+            var counts = ((IChunkStatusByCountArrayGetter)lvl).fabricexporter$getChunkStatusCounter();
+            counts[oldChunkStatus.ordinal()]--;
+            counts[newChunkStatus.ordinal()]++;
         });
 
         instance = this;
